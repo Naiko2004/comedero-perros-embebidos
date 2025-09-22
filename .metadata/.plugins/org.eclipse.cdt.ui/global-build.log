@@ -1,0 +1,76 @@
+../Core/Src/main.c: In function 'main':
+../Core/Src/main.c:76:17: warning: unused variable 'DIR_FLAG' [-Wunused-variable]
+   76 |         uint8_t DIR_FLAG = 0;
+      |                 ^~~~~~~~
+../Core/Src/main.c:75:17: warning: unused variable 'MOTOR1_DIR' [-Wunused-variable]
+   75 |         uint8_t MOTOR1_DIR = DIR_CW;
+      |                 ^~~~~~~~~~
+arm-none-eabi-gcc "../Core/Src/stm32f1xx_it.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32f1xx_it.d" -MT"Core/Src/stm32f1xx_it.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/stm32f1xx_it.o"
+arm-none-eabi-gcc "../Core/Src/syscalls.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/syscalls.d" -MT"Core/Src/syscalls.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/syscalls.o"
+arm-none-eabi-gcc "../Core/Src/sysmem.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/sysmem.d" -MT"Core/Src/sysmem.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/sysmem.o"
+arm-none-eabi-gcc -o "COMEDERO_MOTOR.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\COMEDERO_MOTOR\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="COMEDERO_MOTOR.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: COMEDERO_MOTOR.elf
+ 
+arm-none-eabi-size  COMEDERO_MOTOR.elf 
+   text	   data	    bss	    dec	    hex	filename
+  12628	     12	   1692	  14332	   37fc	COMEDERO_MOTOR.elf
+Finished building: default.size.stdout
+ 
+arm-none-eabi-objdump -h -S COMEDERO_MOTOR.elf  > "COMEDERO_MOTOR.list"
+arm-none-eabi-objdump: Warning: source file C:/Users/nico2/OneDrive/Desktop/EMBEBIDOS/COMEDERO_MOTOR/Debug/../Core/Src/stm32f1xx_it.c is more recent than object file
+Finished building: COMEDERO_MOTOR.list
+ 
+
+15:27:30 Build Finished. 0 errors, 2 warnings. (took 1s.940ms)
+
+15:27:32 **** Incremental Build of configuration Debug for project COMEDERO_MOTOR ****
+make -j1 all 
+arm-none-eabi-gcc "../Core/Src/stm32f1xx_it.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32f1xx_it.d" -MT"Core/Src/stm32f1xx_it.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/stm32f1xx_it.o"
+arm-none-eabi-gcc "../Core/Src/syscalls.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/syscalls.d" -MT"Core/Src/syscalls.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/syscalls.o"
+arm-none-eabi-gcc "../Core/Src/sysmem.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/sysmem.d" -MT"Core/Src/sysmem.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/sysmem.o"
+arm-none-eabi-gcc -o "COMEDERO_MOTOR.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\COMEDERO_MOTOR\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="COMEDERO_MOTOR.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: COMEDERO_MOTOR.elf
+ 
+arm-none-eabi-size  COMEDERO_MOTOR.elf 
+   text	   data	    bss	    dec	    hex	filename
+  12628	     12	   1692	  14332	   37fc	COMEDERO_MOTOR.elf
+Finished building: default.size.stdout
+ 
+arm-none-eabi-objdump -h -S COMEDERO_MOTOR.elf  > "COMEDERO_MOTOR.list"
+arm-none-eabi-objdump: Warning: source file C:/Users/nico2/OneDrive/Desktop/EMBEBIDOS/COMEDERO_MOTOR/Debug/../Core/Src/stm32f1xx_it.c is more recent than object file
+Finished building: COMEDERO_MOTOR.list
+ 
+15:27:39 **** Incremental Build of configuration Debug for project COMEDERO_MOTOR ****
+make -j1 all 
+arm-none-eabi-gcc "../Core/Src/stm32f1xx_it.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32f1xx_it.d" -MT"Core/Src/stm32f1xx_it.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/stm32f1xx_it.o"
+arm-none-eabi-gcc "../Core/Src/syscalls.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/syscalls.d" -MT"Core/Src/syscalls.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/syscalls.o"
+arm-none-eabi-gcc "../Core/Src/sysmem.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/sysmem.d" -MT"Core/Src/sysmem.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/sysmem.o"
+arm-none-eabi-gcc -o "COMEDERO_MOTOR.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\COMEDERO_MOTOR\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="COMEDERO_MOTOR.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: COMEDERO_MOTOR.elf
+ 
+arm-none-eabi-size  COMEDERO_MOTOR.elf 
+   text	   data	    bss	    dec	    hex	filename
+  12628	     12	   1692	  14332	   37fc	COMEDERO_MOTOR.elf
+Finished building: default.size.stdout
+ 
+arm-none-eabi-objdump -h -S COMEDERO_MOTOR.elf  > "COMEDERO_MOTOR.list"
+arm-none-eabi-objdump: Warning: source file C:/Users/nico2/OneDrive/Desktop/EMBEBIDOS/COMEDERO_MOTOR/Debug/../Core/Src/stm32f1xx_it.c is more recent than object file
+Finished building: COMEDERO_MOTOR.list
+ 
+15:28:02 **** Incremental Build of configuration Debug for project COMEDERO_MOTOR ****
+make -j1 all 
+arm-none-eabi-gcc "../Core/Src/stm32f1xx_it.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32f1xx_it.d" -MT"Core/Src/stm32f1xx_it.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/stm32f1xx_it.o"
+arm-none-eabi-gcc "../Core/Src/syscalls.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/syscalls.d" -MT"Core/Src/syscalls.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/syscalls.o"
+arm-none-eabi-gcc "../Core/Src/sysmem.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/sysmem.d" -MT"Core/Src/sysmem.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/sysmem.o"
+arm-none-eabi-gcc -o "COMEDERO_MOTOR.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\COMEDERO_MOTOR\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="COMEDERO_MOTOR.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: COMEDERO_MOTOR.elf
+ 
+arm-none-eabi-size  COMEDERO_MOTOR.elf 
+   text	   data	    bss	    dec	    hex	filename
+  12628	     12	   1692	  14332	   37fc	COMEDERO_MOTOR.elf
+Finished building: default.size.stdout
+ 
+arm-none-eabi-objdump -h -S COMEDERO_MOTOR.elf  > "COMEDERO_MOTOR.list"
+arm-none-eabi-objdump: Warning: source file C:/Users/nico2/OneDrive/Desktop/EMBEBIDOS/COMEDERO_MOTOR/Debug/../Core/Src/stm32f1xx_it.c is more recent than object file
+Finished building: COMEDERO_MOTOR.list
+ 
