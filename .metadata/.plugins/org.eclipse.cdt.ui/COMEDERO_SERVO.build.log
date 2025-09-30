@@ -1,0 +1,20 @@
+19:16:01 **** Incremental Build of configuration Debug for project COMEDERO_SERVO ****
+make -j1 all 
+arm-none-eabi-gcc "../Core/Src/SERVO_cfg.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/SERVO_cfg.d" -MT"Core/Src/SERVO_cfg.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/SERVO_cfg.o"
+../Core/Src/SERVO_cfg.c:22:17: warning: initialization discards 'volatile' qualifier from pointer target type [-Wdiscarded-qualifiers]
+   22 |                 &TIM2->CCR1,
+      |                 ^
+arm-none-eabi-gcc -o "COMEDERO_SERVO.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\COMEDERO_SERVO\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="COMEDERO_SERVO.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: COMEDERO_SERVO.elf
+ 
+arm-none-eabi-size  COMEDERO_SERVO.elf 
+   text	   data	    bss	    dec	    hex	filename
+  15688	     12	   1692	  17392	   43f0	COMEDERO_SERVO.elf
+Finished building: default.size.stdout
+ 
+arm-none-eabi-objdump -h -S COMEDERO_SERVO.elf  > "COMEDERO_SERVO.list"
+Finished building: COMEDERO_SERVO.list
+ 
+
+19:16:02 Build Finished. 0 errors, 1 warnings. (took 817ms)
+

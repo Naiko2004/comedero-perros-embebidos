@@ -16,3 +16,57 @@ Command-line arguments:  -os win32 -ws win32 -arch x86_64
 
 !ENTRY org.eclipse.cdt.core 1 0 2025-09-22 18:14:02.009
 !MESSAGE Indexed 'COMEDERO_MOTOR' (17 sources, 78 headers) in 8.74 sec: 3,647 declarations; 13,278 references; 0 unresolved inclusions; 1 syntax errors; 2 unresolved names (0.012%)
+!SESSION 2025-09-29 17:01:51.831 -----------------------------------------------
+eclipse.buildId=Version 1.19.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2025-09-29 17:02:42.361
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2025-09-29 17:02:42.362
+!MESSAGE Log4j2 initialized with config file C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2025-09-29 17:04:16.407
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2025-09-29 17:43:38.847
+!MESSAGE Indexed 'COMEDERO_SERVO' (21 sources, 82 headers) in 5.45 sec: 5,177 declarations; 34,155 references; 0 unresolved inclusions; 1 syntax errors; 2 unresolved names (0.0051%)
+
+!ENTRY org.eclipse.cdt.ui 2 0 2025-09-29 18:49:37.683
+!MESSAGE The 'org.eclipse.cdt.ui.DOMCompletionProposalComputer' proposal computer from the 'org.eclipse.cdt.ui' plug-in did not complete normally. The extension took too long to return from the 'computeCompletionProposals()' operation.
+
+!ENTRY com.st.stm32cube.ide.mcu.debug 4 0 2025-09-29 18:55:16.231
+!MESSAGE Connection refused: connect
+!STACK 0
+java.net.ConnectException: Connection refused: connect
+	at java.base/sun.nio.ch.Net.connect0(Native Method)
+	at java.base/sun.nio.ch.Net.connect(Net.java:589)
+	at java.base/sun.nio.ch.Net.connect(Net.java:578)
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:583)
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327)
+	at java.base/java.net.Socket.connect(Socket.java:751)
+	at java.base/java.net.Socket.connect(Socket.java:686)
+	at java.base/java.net.Socket.<init>(Socket.java:555)
+	at java.base/java.net.Socket.<init>(Socket.java:356)
+	at com.st.stm32cube.ide.mcu.debug.stlinkclient.STLinkTcpClient.initSocket(STLinkTcpClient.java:282)
+	at com.st.stm32cube.ide.mcu.debug.stlinkclient.STLinkTcpClient.initTcpClient(STLinkTcpClient.java:336)
+	at com.st.stm32cube.ide.mcu.debug.stlinkclient.STLinkTcpClient.<init>(STLinkTcpClient.java:233)
+	at com.st.stm32cube.ide.mcu.debug.stlinkclient.ManagerSTLinkClient.openClient(ManagerSTLinkClient.java:31)
+	at com.st.stm32cube.ide.mcu.debug.stlinkfwutil.StLinkFwUtil.lookupStLink(StLinkFwUtil.java:266)
+	at com.st.stm32cube.ide.mcu.debug.stlinkfwutil.StLinkFwUtil.validate(StLinkFwUtil.java:111)
+	at com.st.stm32cube.ide.mcu.debug.stlink.StLinkDebugHardware.preLaunchCheck(StLinkDebugHardware.java:289)
+	at com.st.stm32cube.ide.mcu.debug.launch.DSFDelegate.preLaunchCheck(DSFDelegate.java:167)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:769)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:716)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin.buildAndLaunch(DebugUIPlugin.java:1054)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin$1.run(DebugUIPlugin.java:1257)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug 4 0 2025-09-29 19:08:51.236
+!MESSAGE Error - No active DSF-Session. tmpSessionId = 7 (contextManager row 121)
+
+!ENTRY com.st.stm32cube.ide.mcu.debug 4 0 2025-09-29 19:08:51.236
+!MESSAGE Existing sessions are:
