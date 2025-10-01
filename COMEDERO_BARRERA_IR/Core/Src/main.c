@@ -44,6 +44,7 @@ TIM_HandleTypeDef htim2;
 
 /* USER CODE BEGIN PV */
 volatile uint32_t ir_count = 0;
+TIM_HandleTypeDef htim3;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -51,17 +52,13 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_TIM2_Init(void);
 /* USER CODE BEGIN PFP */
+static void MX_TIM3_Init(void);
 void delay_us(uint32_t us);
 int readBarrier(unsigned int len);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
-    if (GPIO_Pin == GPIO_PIN_7) {
-        ir_count++;
-    }
-}
 
 /* USER CODE END 0 */
 
@@ -82,7 +79,8 @@ int main(void)
   HAL_Init();
 
   /* USER CODE BEGIN Init */
-
+  HAL_NVIC_SetPriority(EXTI9_5_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(EXTI9_5_IRQn);
   /* USER CODE END Init */
 
   /* Configure the system clock */
@@ -95,11 +93,11 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_TIM2_Init();
-  /* USER CODE BEGIN 2 */
 
-  CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
-  DWT->CYCCNT = 0;
-  DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
+  /* USER CODE BEGIN 2 */
+  MX_TIM3_Init();
+
+
 
   /* USER CODE END 2 */
 
@@ -112,9 +110,9 @@ int main(void)
 	  if(c > 0){
 		  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
 	  }else{
-		  HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET);
+		  //HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET);
 	  }
-	  HAL_Delay(100);
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -266,16 +264,53 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin : PB7 */
   GPIO_InitStruct.Pin = GPIO_PIN_7;
-  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
+  GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING ;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 
+
   /* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
+
+
+
+static void MX_TIM3_Init(void)
+{
+    __HAL_RCC_TIM3_CLK_ENABLE();
+
+    uint32_t pclk1 = HAL_RCC_GetPCLK1Freq();
+    uint32_t tim_clk = pclk1;
+    if (HAL_RCC_GetHCLKFreq() != pclk1) {
+        /* If APB1 prescaler != 1 the timer clock is PCLK1 * 2 */
+        tim_clk = pclk1 * 2;
+    }
+
+    uint32_t presc = (tim_clk / 1000000UL);
+    if (presc == 0) presc = 1;
+    presc = presc - 1; /* prescaler register = division - 1 */
+
+    htim3.Instance = TIM3;
+    htim3.Init.Prescaler = presc;                // makes 1 MHz timer -> 1 µs tick
+    htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
+    htim3.Init.Period = 0xFFFF;                  // 16-bit timer rollover ~65 ms
+    htim3.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+    htim3.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+
+    if (HAL_TIM_Base_Init(&htim3) != HAL_OK)
+    {
+        Error_Handler();
+    }
+
+    if (HAL_TIM_Base_Start(&htim3) != HAL_OK) {
+        /* start failed — catch it in Error_Handler */
+        Error_Handler();
+    }
+}
+
 
 int readBarrier(unsigned int len)
 {
@@ -293,14 +328,23 @@ int readBarrier(unsigned int len)
 	return (int)cnt;
 }
 
-void delay_us(uint32_t us) {
-    uint32_t cycles = (SystemCoreClock / 1000000L) * us;
-    uint32_t start = DWT->CYCCNT;
-    while ((DWT->CYCCNT - start) < cycles) {
-        __NOP();
+void delay_us(uint32_t us)
+{
+    uint32_t start = __HAL_TIM_GET_COUNTER(&htim3);
+    /* if timer stopped / not running, avoid infinite loop */
+    uint32_t timeout = us + 1000;
+    while ((__HAL_TIM_GET_COUNTER(&htim3) - start) < us)
+    {
+        if (--timeout == 0) break;
     }
 }
 
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
+    if (GPIO_Pin == GPIO_PIN_7) {
+        ir_count++;
+    }
+}
 
 
 /* USER CODE END 4 */
