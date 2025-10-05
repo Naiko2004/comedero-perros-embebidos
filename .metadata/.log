@@ -2120,3 +2120,24 @@ Command-line arguments:  -os win32 -ws win32 -arch x86_64
 
 !ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2025-10-04 18:07:12.449
 !MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2025-10-05 15:54:07.526 -----------------------------------------------
+eclipse.buildId=Version 1.19.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2025-10-05 11:54:41.979
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2025-10-05 11:54:42.076
+!MESSAGE Log4j2 initialized with config file C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2025-10-05 11:54:56.668
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2025-10-05 11:59:10.134
+!MESSAGE Indexed 'COMEDERO_RTC' (20 sources, 81 headers) in 18.3 sec: 5,661 declarations; 40,719 references; 0 unresolved inclusions; 1 syntax errors; 2 unresolved names (0.0043%)
+
+!ENTRY org.eclipse.cdt.core 1 0 2025-10-05 12:21:45.147
+!MESSAGE Indexed 'COMEDERO_RTC_FEE' (25 sources, 86 headers) in 2.96 sec: 6,135 declarations; 43,477 references; 0 unresolved inclusions; 1 syntax errors; 2 unresolved names (0.004%)
