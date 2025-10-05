@@ -7,7 +7,7 @@ org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:COMEDERO_BARRERA_IR\ Debug/acti
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:COMEDERO_BARRERA_IR\ Debug/activeLaunchTarget=null\:---
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:COMEDERO_BARRERA_IR_2\ Debug/activeLaunchMode=run
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:COMEDERO_BARRERA_IR_2\ Debug/activeLaunchTarget=null\:---
-org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:COMEDERO_HX711\ Debug/activeLaunchMode=debug
+org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:COMEDERO_HX711\ Debug/activeLaunchMode=run
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:COMEDERO_HX711\ Debug/activeLaunchTarget=null\:---
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:COMEDERO_MOTOR\ Debug/activeLaunchMode=debug
 org.eclipse.cdt.dsf.gdb.gdbRemotedescriptorType\:COMEDERO_MOTOR\ Debug/activeLaunchTarget=null\:---

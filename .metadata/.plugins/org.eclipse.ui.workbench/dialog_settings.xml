@@ -16,6 +16,7 @@
 		<item key="WizardFileSystemResourceImportPage1.STORE_CREATE_CONTAINER_STRUCTURE_ID" value="false"/>
 		<list key="WizardFileSystemResourceImportPage1.STORE_SOURCE_NAMES_ID">
 			<item value="C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\LIBRERIAS\STM32_Course_DeepBlue-master\util"/>
+			<item value="C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\LIBRERIAS\STM32_Course_DeepBlue-master\ECUAL\I2C_LCD"/>
 			<item value="C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\LIBRERIAS\STM32_Course_DeepBlue-master\ECUAL\SERVO"/>
 		</list>
 		<section name="FileSystemImportWizard.dialogBounds">

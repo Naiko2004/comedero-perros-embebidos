@@ -21,7 +21,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "I2C_LCD.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -36,10 +36,17 @@
 #define SCK_PIN GPIO_PIN_9
 #define SCK_PORT GPIOB
 
+#define MyI2C_LCD I2C_LCD_1
+
+#define FIXED_POINT_SCALE 1000
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
+#define TO_FIXED(x)   ((int32_t)((x) * FIXED_SCALE))
+#define FROM_FIXED(x) ((x) / FIXED_SCALE)
+#define MUL_FIXED(a,b) ((int32_t)(((int64_t)(a) * (b)) / FIXED_SCALE))
+#define DIV_FIXED(a,b) ((int32_t)(((int64_t)(a) * FIXED_SCALE) / (b)))
 
 /* USER CODE END PM */
 
@@ -49,9 +56,9 @@ I2C_HandleTypeDef hi2c1;
 TIM_HandleTypeDef htim2;
 
 /* USER CODE BEGIN PV */
-uint32_t tare = 161800;
-float knownOriginal = 1;
-float knownHX711 = 1;
+int32_t tare = -151452;
+int32_t knownOriginal = 1 * FIXED_POINT_SCALE; // 1 MILIGRAMO
+int32_t knownHX711 = 1 * FIXED_POINT_SCALE; // 1 MILIGRAMO
 int32_t weight;
 
 /* USER CODE END PV */
@@ -64,7 +71,7 @@ static void MX_I2C1_Init(void);
 /* USER CODE BEGIN PFP */
 void microDelay(uint16_t delay);
 int32_t getHX711(void);
-int weigh();
+int32_t weigh();
 
 /* USER CODE END PFP */
 
@@ -111,6 +118,11 @@ int main(void)
   HAL_Delay(10);
   HAL_GPIO_WritePin(SCK_PORT, SCK_PIN, GPIO_PIN_RESET);
   HAL_Delay(10);
+
+  I2C_LCD_Init(MyI2C_LCD);
+  I2C_LCD_SetCursor(MyI2C_LCD, 0, 0);
+  I2C_LCD_WriteString(MyI2C_LCD, "Peso medido");
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -118,6 +130,13 @@ int main(void)
   while (1)
   {
 	  weight = weigh();
+	  I2C_LCD_SetCursor(MyI2C_LCD, 0, 1);
+	  I2C_LCD_WriteString(MyI2C_LCD, "                ");
+	  I2C_LCD_SetCursor(MyI2C_LCD, 0, 1);
+	  I2C_LCD_WriteInt32(MyI2C_LCD, weight);
+	  I2C_LCD_SetCursor(MyI2C_LCD, 14, 1);
+	  I2C_LCD_WriteString(MyI2C_LCD, "mg");
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -284,8 +303,8 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 
 void microDelay(uint16_t delay){
-	__HAL_TIM_SET_COUNTER(&htim2, 0);
-	while(__HAL_TIM_GET_COUNTER(&htim2) < delay);
+    uint16_t start = __HAL_TIM_GET_COUNTER(&htim2);
+    while((uint16_t)(__HAL_TIM_GET_COUNTER(&htim2) - start) < delay);
 };
 int32_t getHX711(void){
 	uint32_t data = 0;
@@ -317,19 +336,18 @@ int32_t getHX711(void){
 	return data;
 };
 
-int weigh()
+int32_t weigh()
 {
-	int32_t total = 0;
-	int32_t samples = 50;
-	int miligram;
-	float coefficient;
+	int64_t total = 0;
+	int32_t samples = 10;
+	int32_t miligram;
 	for(uint16_t i = 0; i<samples; i++)
 	{
-		total =+ getHX711();
+		total += getHX711();
 	}
-	int32_t average = (int32_t)(total / samples);
-	coefficient = knownOriginal / knownHX711;
-	miligram = (int)(average - tare)*coefficient;
+	total = (int64_t)(total / samples);
+	miligram = (int32_t)(total - tare)*knownOriginal;
+	miligram = miligram / knownHX711;
 	return miligram;
 
 };
