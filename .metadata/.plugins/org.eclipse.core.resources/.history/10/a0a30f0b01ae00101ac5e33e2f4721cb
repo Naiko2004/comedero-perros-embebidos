@@ -1,0 +1,60 @@
+/*
+ * HX711.c
+ *
+ *  Created on: Oct 20, 2025
+ *      Author: nico2
+ */
+
+#include "HX711.h"
+
+void microDelay(uint16_t delay){
+    uint16_t start = __HAL_TIM_GET_COUNTER(&htim2);
+    while((uint16_t)(__HAL_TIM_GET_COUNTER(&htim2) - start) < delay);
+};
+int32_t getHX711(void){
+	uint32_t data = 0;
+	uint32_t startTime = HAL_GetTick();
+	while(HAL_GPIO_ReadPin(DT_PORT, DT_PIN) == GPIO_PIN_SET)
+	{
+		if(HAL_GetTick() - startTime > 200)
+		{
+			return 0;
+		}
+	}
+	for(int8_t len = 0; len < 24; len++)
+	{
+		HAL_GPIO_WritePin(SCK_PORT, SCK_PIN, GPIO_PIN_SET);
+		microDelay(1);
+		data = data << 1;
+		HAL_GPIO_WritePin(SCK_PORT, SCK_PIN, GPIO_PIN_RESET);
+		microDelay(1);
+		if(HAL_GPIO_ReadPin(DT_PORT, DT_PIN) == GPIO_PIN_SET)
+		{
+			data++;
+		}
+	}
+	data = data ^ 0x800000;
+	HAL_GPIO_WritePin(SCK_PORT, SCK_PIN, GPIO_PIN_SET);
+	microDelay(1);
+	HAL_GPIO_WritePin(SCK_PORT, SCK_PIN, GPIO_PIN_RESET);
+	microDelay(1);
+	return data;
+};
+
+int32_t weigh()
+{
+	int64_t total = 0;
+	int32_t samples = 10;
+	int32_t miligram;
+	for(uint16_t i = 0; i<samples; i++)
+	{
+		total += getHX711();
+	}
+	total = (int64_t)(total / samples);
+	miligram = (int32_t)(total - tare)*knownOriginal;
+	miligram = miligram / knownHX711;
+	return miligram;
+
+};
+
+

@@ -7,45 +7,45 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
   1 .text         00004538  0800010c  0800010c  0000110c  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .rodata       000000b8  08004644  08004644  00005644  2**2
+  2 .rodata       000000dc  08004644  08004644  00005644  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  3 .ARM.extab    00000000  080046fc  080046fc  0000605c  2**0
+  3 .ARM.extab    00000000  08004720  08004720  0000605c  2**0
                   CONTENTS, READONLY
-  4 .ARM          00000000  080046fc  080046fc  0000605c  2**0
+  4 .ARM          00000000  08004720  08004720  0000605c  2**0
                   CONTENTS, READONLY
-  5 .preinit_array 00000000  080046fc  080046fc  0000605c  2**0
+  5 .preinit_array 00000000  08004720  08004720  0000605c  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  6 .init_array   00000004  080046fc  080046fc  000056fc  2**2
+  6 .init_array   00000004  08004720  08004720  00005720  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  7 .fini_array   00000004  08004700  08004700  00005700  2**2
+  7 .fini_array   00000004  08004724  08004724  00005724  2**2
                   CONTENTS, ALLOC, LOAD, READONLY, DATA
-  8 .data         0000005c  20000000  08004704  00006000  2**2
+  8 .data         0000005c  20000000  08004728  00006000  2**2
                   CONTENTS, ALLOC, LOAD, DATA
-  9 .bss          00000248  20000060  08004760  00006060  2**3
+  9 .bss          00000248  20000060  08004784  00006060  2**3
                   ALLOC
- 10 ._user_heap_stack 00000600  200002a8  08004760  000062a8  2**0
+ 10 ._user_heap_stack 00000600  200002a8  08004784  000062a8  2**0
                   ALLOC
  11 .ARM.attributes 00000029  00000000  00000000  0000605c  2**0
                   CONTENTS, READONLY
- 12 .debug_info   0000e08e  00000000  00000000  00006085  2**0
+ 12 .debug_info   0000e0fb  00000000  00000000  00006085  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 13 .debug_abbrev 00002796  00000000  00000000  00014113  2**0
+ 13 .debug_abbrev 00002796  00000000  00000000  00014180  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_aranges 00001038  00000000  00000000  000168b0  2**3
+ 14 .debug_aranges 00001040  00000000  00000000  00016918  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_rnglists 00000c82  00000000  00000000  000178e8  2**0
+ 15 .debug_rnglists 00000c89  00000000  00000000  00017958  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_macro  00018ae4  00000000  00000000  0001856a  2**0
+ 16 .debug_macro  00018ae4  00000000  00000000  000185e1  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   00013480  00000000  00000000  0003104e  2**0
+ 17 .debug_line   000134b0  00000000  00000000  000310c5  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    0008d32d  00000000  00000000  000444ce  2**0
+ 18 .debug_str    0008d34d  00000000  00000000  00044575  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000043  00000000  00000000  000d17fb  2**0
+ 19 .comment      00000043  00000000  00000000  000d18c2  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  00004870  00000000  00000000  000d1840  2**2
+ 20 .debug_frame  00004894  00000000  00000000  000d1908  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 00000065  00000000  00000000  000d60b0  2**0
+ 21 .debug_line_str 00000065  00000000  00000000  000d619c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -482,7 +482,7 @@ static void I2C_LCD_ExpanderWrite(uint8_t I2C_LCD_InstanceIndex, uint8_t DATA)
  8000490:	46bd      	mov	sp, r7
  8000492:	bd80      	pop	{r7, pc}
  8000494:	2000007c 	.word	0x2000007c
- 8000498:	0800467c 	.word	0x0800467c
+ 8000498:	080046a0 	.word	0x080046a0
 
 0800049c <I2C_LCD_EnPulse>:
 
@@ -1009,7 +1009,7 @@ void I2C_LCD_SetCursor(uint8_t I2C_LCD_InstanceIndex, uint8_t Col, uint8_t Row)
  800086c:	46bd      	mov	sp, r7
  800086e:	bd90      	pop	{r4, r7, pc}
  8000870:	08004644 	.word	0x08004644
- 8000874:	0800467c 	.word	0x0800467c
+ 8000874:	080046a0 	.word	0x080046a0
 
 08000878 <I2C_LCD_WriteChar>:
 
@@ -1248,11 +1248,11 @@ int main(void)
  80009d2:	f7ff fcad 	bl	8000330 <FEE_WriteData>
 	  HAL_RTC_GetTime(&hrtc, &gTime, RTC_FORMAT_BIN);
  80009d6:	e7c1      	b.n	800095c <main+0x58>
- 80009d8:	08004658 	.word	0x08004658
+ 80009d8:	0800467c 	.word	0x0800467c
  80009dc:	20000130 	.word	0x20000130
  80009e0:	0800f000 	.word	0x0800f000
  80009e4:	200000d4 	.word	0x200000d4
- 80009e8:	08004668 	.word	0x08004668
+ 80009e8:	0800468c 	.word	0x0800468c
 
 080009ec <SystemClock_Config>:
 /**
@@ -2357,7 +2357,7 @@ LoopFillZerobss:
   ldr r1, =_edata
  8000efc:	2000005c 	.word	0x2000005c
   ldr r2, =_sidata
- 8000f00:	08004704 	.word	0x08004704
+ 8000f00:	08004728 	.word	0x08004728
   ldr r2, =_sbss
  8000f04:	20000060 	.word	0x20000060
   ldr r4, =_ebss
@@ -6936,7 +6936,7 @@ if (((RCC_ClkInitStruct->ClockType) & RCC_CLOCKTYPE_PCLK1) == RCC_CLOCKTYPE_PCLK
  80028fe:	bf00      	nop
  8002900:	40022000 	.word	0x40022000
  8002904:	40021000 	.word	0x40021000
- 8002908:	08004688 	.word	0x08004688
+ 8002908:	080046ac 	.word	0x080046ac
  800290c:	20000000 	.word	0x20000000
  8002910:	20000004 	.word	0x20000004
 
@@ -7071,8 +7071,8 @@ uint32_t HAL_RCC_GetSysClockFreq(void)
  80029a6:	bf00      	nop
  80029a8:	40021000 	.word	0x40021000
  80029ac:	007a1200 	.word	0x007a1200
- 80029b0:	080046a0 	.word	0x080046a0
- 80029b4:	080046b0 	.word	0x080046b0
+ 80029b0:	080046c4 	.word	0x080046c4
+ 80029b4:	080046d4 	.word	0x080046d4
  80029b8:	003d0900 	.word	0x003d0900
 
 080029bc <HAL_RCC_GetHCLKFreq>:
@@ -7118,7 +7118,7 @@ uint32_t HAL_RCC_GetPCLK1Freq(void)
  80029ec:	4618      	mov	r0, r3
  80029ee:	bd80      	pop	{r7, pc}
  80029f0:	40021000 	.word	0x40021000
- 80029f4:	08004698 	.word	0x08004698
+ 80029f4:	080046bc 	.word	0x080046bc
 
 080029f8 <HAL_RCC_GetPCLK2Freq>:
   * @note   Each time PCLK2 changes, this function must be called to update the
@@ -7144,7 +7144,7 @@ uint32_t HAL_RCC_GetPCLK2Freq(void)
  8002a14:	4618      	mov	r0, r3
  8002a16:	bd80      	pop	{r7, pc}
  8002a18:	40021000 	.word	0x40021000
- 8002a1c:	08004698 	.word	0x08004698
+ 8002a1c:	080046bc 	.word	0x080046bc
 
 08002a20 <RCC_Delay>:
   * @brief  This function provides delay (in milliseconds) based on CPU cycles method.
@@ -7652,8 +7652,8 @@ uint32_t HAL_RCCEx_GetPeriphCLKFreq(uint32_t PeriphClk)
  8002d18:	bd80      	pop	{r7, pc}
  8002d1a:	bf00      	nop
  8002d1c:	40021000 	.word	0x40021000
- 8002d20:	080046b4 	.word	0x080046b4
- 8002d24:	080046c4 	.word	0x080046c4
+ 8002d20:	080046d8 	.word	0x080046d8
+ 8002d24:	080046e8 	.word	0x080046e8
  8002d28:	007a1200 	.word	0x007a1200
  8002d2c:	003d0900 	.word	0x003d0900
  8002d30:	aaaaaaab 	.word	0xaaaaaaab
@@ -10686,10 +10686,10 @@ HAL_StatusTypeDef HAL_TIMEx_MasterConfigSynchronization(TIM_HandleTypeDef *htim,
  8003d5e:	4798      	blx	r3
  8003d60:	3601      	adds	r6, #1
  8003d62:	e7f2      	b.n	8003d4a <__libc_init_array+0x1e>
- 8003d64:	080046fc 	.word	0x080046fc
- 8003d68:	080046fc 	.word	0x080046fc
- 8003d6c:	080046fc 	.word	0x080046fc
- 8003d70:	08004700 	.word	0x08004700
+ 8003d64:	08004720 	.word	0x08004720
+ 8003d68:	08004720 	.word	0x08004720
+ 8003d6c:	08004720 	.word	0x08004720
+ 8003d70:	08004724 	.word	0x08004724
 
 08003d74 <__retarget_lock_acquire_recursive>:
  8003d74:	4770      	bx	lr
@@ -11206,9 +11206,9 @@ HAL_StatusTypeDef HAL_TIMEx_MasterConfigSynchronization(TIM_HandleTypeDef *htim,
  8004214:	a904      	add	r1, sp, #16
  8004216:	f000 f87d 	bl	8004314 <_printf_i>
  800421a:	e7ed      	b.n	80041f8 <_svfiprintf_r+0x1c0>
- 800421c:	080046c6 	.word	0x080046c6
- 8004220:	080046cc 	.word	0x080046cc
- 8004224:	080046d0 	.word	0x080046d0
+ 800421c:	080046ea 	.word	0x080046ea
+ 8004220:	080046f0 	.word	0x080046f0
+ 8004224:	080046f4 	.word	0x080046f4
  8004228:	00000000 	.word	0x00000000
  800422c:	08003f81 	.word	0x08003f81
 
@@ -11540,8 +11540,8 @@ HAL_StatusTypeDef HAL_TIMEx_MasterConfigSynchronization(TIM_HandleTypeDef *htim,
  8004540:	2500      	movs	r5, #0
  8004542:	f104 0619 	add.w	r6, r4, #25
  8004546:	e7f5      	b.n	8004534 <_printf_i+0x220>
- 8004548:	080046d7 	.word	0x080046d7
- 800454c:	080046e8 	.word	0x080046e8
+ 8004548:	080046fb 	.word	0x080046fb
+ 800454c:	0800470c 	.word	0x0800470c
 
 08004550 <memmove>:
  8004550:	4288      	cmp	r0, r1

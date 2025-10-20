@@ -91,8 +91,8 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_TIM2_Init();
   MX_TIM3_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
@@ -342,7 +342,7 @@ int readBarrier(unsigned int len)
 
 	uint32_t cnt = ir_count;
 	ir_count = 0;
-	HAL_Delay(20); // min pause.
+	HAL_Delay(22); // min pause.
 	return (int)cnt;
 }
 

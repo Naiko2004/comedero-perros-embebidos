@@ -109,10 +109,10 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
  800015a:	f000 f983 	bl	8000464 <MX_GPIO_Init>
-  MX_TIM2_Init();
- 800015e:	f000 f85b 	bl	8000218 <MX_TIM2_Init>
   MX_TIM3_Init();
- 8000162:	f000 f913 	bl	800038c <MX_TIM3_Init>
+ 800015e:	f000 f915 	bl	800038c <MX_TIM3_Init>
+  MX_TIM2_Init();
+ 8000162:	f000 f859 	bl	8000218 <MX_TIM2_Init>
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
@@ -782,8 +782,8 @@ int readBarrier(unsigned int len)
  8000552:	4b06      	ldr	r3, [pc, #24]	@ (800056c <readBarrier+0x5c>)
  8000554:	2200      	movs	r2, #0
  8000556:	601a      	str	r2, [r3, #0]
-	HAL_Delay(20); // min pause.
- 8000558:	2014      	movs	r0, #20
+	HAL_Delay(22); // min pause.
+ 8000558:	2016      	movs	r0, #22
  800055a:	f000 f99b 	bl	8000894 <HAL_Delay>
 	return (int)cnt;
  800055e:	68bb      	ldr	r3, [r7, #8]
