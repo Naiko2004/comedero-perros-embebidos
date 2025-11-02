@@ -57,6 +57,7 @@ typedef struct
 
 void DC_MOTOR_Acelerar(uint8_t au8_MOTOR_Instance, uint16_t *au16_SPEED);
 void DC_MOTOR_Frenar(uint8_t au8_MOTOR_Instance, uint16_t *au16_SPEED);
+void DC_MOTOR_Ajustar_velocidad(uint8_t au8_MOTOR_Instance, uint16_t *au16_SPEED, int32_t *_actual, int32_t objetivo);
 
 /*-----[ Prototypes For All Functions ]-----*/
 

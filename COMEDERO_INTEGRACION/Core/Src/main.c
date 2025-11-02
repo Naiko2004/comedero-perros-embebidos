@@ -59,6 +59,7 @@ Boton_HandlerTypeDef hbB;
 Boton_HandlerTypeDef hbC;
 Boton_HandlerTypeDef hbD;
 
+hx711_t scale;
 
 estado estados = ESTADO_INICIANDO;
 Motor_speeds velocidad_motor = NORMAL_SPEED;
@@ -78,6 +79,7 @@ flag flag_cambiar_hora = FLAG_INACTIVA;
 flag flag_alarma_activada = FLAG_INACTIVA;
 flag flag_cerrar_puerta = FLAG_INACTIVA;
 flag flag_contador = FLAG_INACTIVA;
+flag flag_paleta_atascada = FLAG_INACTIVA;
 
 /* USER CODE END PV */
 
@@ -146,7 +148,13 @@ int main(void)
   Boton_init(&hbC, EXTI10_BOTON_C_GPIO_Port, EXTI10_BOTON_C_Pin);
   Boton_init(&hbD, EXTI11_BOTON_D_GPIO_Port, EXTI11_BOTON_D_Pin);
 
-  HX711_Init();
+
+  HX711_Construct(&scale, GPIOB, GPIO_PIN_8, GPIOB, GPIO_PIN_9, &htim2, 1000);
+  HX711_InitPins(&scale);
+
+  scale.tare = 101362;
+  scale.known_counts_per_mg = 385;
+
   I2C_LCD_SetCursor(I2C_LCD_1, 0, 0);
   I2C_LCD_WriteString(I2C_LCD_1, "AAA");
 
@@ -176,6 +184,7 @@ int main(void)
   while (1)
   {
 
+	HX711_Process(&scale);
 	  // Revisar y setear flags.
 	HAL_RTC_GetTime(&hrtc, &rtcTime, RTC_FORMAT_BIN);
 	if(displayTime.Seconds != rtcTime.Seconds)
@@ -217,10 +226,13 @@ int main(void)
 	if(estados == ESTADO_DOSIFICANDO_ALIMENTO) // polling :(
 	{
 		int32_t temp = peso_anterior;
-		peso_anterior = HX711_weigh();
-		if(temp == peso_anterior)
+		peso_anterior = HX711_WeighBlocking(&scale);
+		if(temp + 6000 >= peso_anterior && temp - 6000 <= peso_anterior)
 		{
 			contador++;
+		}else if(flag_paleta_atascada)
+		{
+			flag_paleta_atascada = FLAG_INACTIVA;
 		}
 
 		if( peso_anterior >= dosis_objetivo * 1000)
@@ -229,14 +241,14 @@ int main(void)
 		}
 	}
 
-	if(contador >= 2)
+	if(contador >= 10)
 	{
 		flag_contador = FLAG_ACTIVA;
 	}
 
 	if(estados == ESTADO_ALIMENTO_SERVIDO && displayTime.Minutes >= 3)
 	{
-		if(HX711_weigh() <= 0 || displayTime.Minutes >= 10)
+		if(HX711_WeighBlocking(&scale) <= 0 || displayTime.Minutes >= 10)
 		{
 			flag_cerrar_puerta = FLAG_ACTIVA;
 		}
@@ -262,7 +274,7 @@ int main(void)
 	  		  if(flag_iniciar_motor)
 	  		  {
 	  			  estados = ESTADO_DOSIFICANDO_ALIMENTO;
-	  			  velocidad_motor = HIGH_SPEED_PLUS;
+	  			  velocidad_motor = LOW_SPEED;
 	  			  DC_MOTOR_Start(MOTOR_DOSIFICADOR, dir_motor, velocidad_motor);
 	  			  SERVO_MoveTo(SERVO_PUERTA, SERVO_CERRADO);
 	  			  I2C_LCD_Clear(I2C_LCD_1);
@@ -557,8 +569,14 @@ int main(void)
 	  			  DC_MOTOR_Set_Dir(MOTOR_DOSIFICADOR, dir_motor);
 
 	  			  flag_contador = FLAG_INACTIVA;
+	  			  flag_paleta_atascada = FLAG_ACTIVA;
+	  			  DC_MOTOR_Acelerar(MOTOR_DOSIFICADOR, &velocidad_motor);
 	  		  }
 
+	  		  if(!flag_paleta_atascada)
+	  		  {
+		  		  DC_MOTOR_Ajustar_velocidad(MOTOR_DOSIFICADOR, &velocidad_motor, &peso_anterior, dosis_objetivo * 1000);
+	  		  }
 
 	  		  /*if(flag_boton_d_presionado)
 	  		  {
@@ -630,11 +648,11 @@ int main(void)
 	  				  I2C_LCD_Clear(I2C_LCD_1);
 	  				  I2C_LCD_SetCursor(I2C_LCD_1, 0, 0);
 	  				  I2C_LCD_WriteString(I2C_LCD_1, "Peso: ");
-	  				  I2C_LCD_WriteInt32(I2C_LCD_1, HX711_weigh() / 1000);
+	  				  I2C_LCD_WriteInt32(I2C_LCD_1, HX711_WeighBlocking(&scale) / 1000);
 	  				  I2C_LCD_WriteString(I2C_LCD_1, " g");
 	  				  I2C_LCD_SetCursor(I2C_LCD_1, 0, 1);
 	  				  I2C_LCD_WriteString(I2C_LCD_1, "Tara: ");
-	  				  I2C_LCD_WriteInt32(I2C_LCD_1, tare / 1000);
+	  				  I2C_LCD_WriteInt32(I2C_LCD_1, scale.tare / 1000);
 	  				  I2C_LCD_WriteString(I2C_LCD_1, " g");
 	  				  I2C_LCD_SetCursor(I2C_LCD_1, 0, 2);
 	  				  I2C_LCD_WriteString(I2C_LCD_1, "A: +1g | B: -1g");
@@ -868,7 +886,7 @@ int main(void)
 	  			  if(flag_cambiar_hora) // ES HORRIBLE, PERO ES LO QUE HAY
 	  			  {
 	  				  I2C_LCD_SetCursor(I2C_LCD_1, 6, 0);
-	  				  I2C_LCD_WriteInt32(I2C_LCD_1, HX711_weigh() / 1000);
+	  				  I2C_LCD_WriteInt32(I2C_LCD_1, HX711_WeighBlocking(&scale) / 1000);
 	  				  I2C_LCD_WriteString(I2C_LCD_1, " g    ");
 	  				  displayTime = rtcTime;
 	  				  flag_cambiar_hora = FLAG_INACTIVA;
@@ -876,18 +894,18 @@ int main(void)
 
 	  			  if(flag_boton_a_presionado) // LISTO, PERO NO DEBERIA PISAR EL TARE PERMANENTEMENTE
 	  			  {
-	  				  tare += 1000;
+	  				  scale.tare += 1000;
 	  				  I2C_LCD_SetCursor(I2C_LCD_1, 6, 1);
-	  				  I2C_LCD_WriteInt32(I2C_LCD_1, tare / 1000);
+	  				  I2C_LCD_WriteInt32(I2C_LCD_1, scale.tare / 1000);
 	  				  I2C_LCD_WriteString(I2C_LCD_1, " g    ");
 	  				  flag_boton_a_presionado = FLAG_INACTIVA;
 	  			  }
 
 	  			  if(flag_boton_b_presionado) // LISTO, IDEM BOTON A
 	  			  {
-	  				  tare -= 1000;
+	  				  scale.tare -= 1000;
 	  				  I2C_LCD_SetCursor(I2C_LCD_1, 6, 1);
-	  				  I2C_LCD_WriteInt32(I2C_LCD_1, tare / 1000);
+	  				  I2C_LCD_WriteInt32(I2C_LCD_1, scale.tare / 1000);
 	  				  I2C_LCD_WriteString(I2C_LCD_1, " g    ");
 	  				  flag_boton_b_presionado = FLAG_INACTIVA;
 	  			  }

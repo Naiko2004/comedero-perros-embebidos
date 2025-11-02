@@ -4,7 +4,7 @@
  *  Created on: Oct 20, 2025
  *      Author: nico2
  */
-
+/*
 #include "HX711.h"
 
 extern TIM_HandleTypeDef htim2;
@@ -12,97 +12,279 @@ extern TIM_HandleTypeDef htim2;
 int32_t tare = 101362 ; // Para llevar a 0
 int32_t knownHX711 = 385;  // Para corregir la pendiente.
 
-void microDelay(uint16_t delay){
-    uint16_t start = __HAL_TIM_GET_COUNTER(&htim2);
-    while((uint16_t)(__HAL_TIM_GET_COUNTER(&htim2) - start) < delay);
+*/
+
+#include "HX711.h"
+#include "stm32f1xx_hal.h"
+#include <string.h>
+#include <stdint.h>
+
+/* internal state enum (values stored in dev->state) */
+enum {
+    S_IDLE = 0,
+    S_WAIT_READY,
+    S_BIT_RISE,
+    S_BIT_FALL,
+    S_POST_PULSES,
+    S_TIMEOUT
 };
 
-void HX711_Init(){
-	  HAL_GPIO_WritePin(SCK_PORT, SCK_PIN, GPIO_PIN_SET);
-	  HAL_Delay(10);
-	  HAL_GPIO_WritePin(SCK_PORT, SCK_PIN, GPIO_PIN_RESET);
-	  HAL_Delay(10);
-};
+/* timing constants (TIM must be 1 MHz) */
+#define PULSE_HIGH_US  1u
+#define PULSE_LOW_US   1u
+#define WAIT_READY_TIMEOUT_MS 200u
 
-int32_t getHX711(void){
+/* helper: current TIM counter (1 MHz timer expected) */
+static inline uint32_t now_us(TIM_HandleTypeDef *htim) {
+    return (uint32_t)__HAL_TIM_GET_COUNTER(htim);
+}
+
+/* GPIO helpers */
+static inline void sck_high(hx711_t *d) { HAL_GPIO_WritePin(d->sck_port, d->sck_pin, GPIO_PIN_SET); }
+static inline void sck_low(hx711_t *d)  { HAL_GPIO_WritePin(d->sck_port, d->sck_pin, GPIO_PIN_RESET); }
+static inline GPIO_PinState dt_state(hx711_t *d) { return HAL_GPIO_ReadPin(d->dt_port, d->dt_pin); }
+
+/* Construct/init structure */
+void HX711_Construct(hx711_t *dev,
+                     GPIO_TypeDef *dt_port, uint16_t dt_pin,
+                     GPIO_TypeDef *sck_port, uint16_t sck_pin,
+                     TIM_HandleTypeDef *htim_us,
+                     int32_t fixed_point_scale)
+{
+    memset(dev, 0, sizeof(hx711_t));
+    dev->dt_port = dt_port;
+    dev->dt_pin  = dt_pin;
+    dev->sck_port = sck_port;
+    dev->sck_pin  = sck_pin;
+    dev->htim_us = htim_us;
+    dev->FP = fixed_point_scale > 0 ? fixed_point_scale : 1000;
+    dev->extra_pulses = 1; /* default gain setting */
+    dev->known_counts_per_mg = 1; /* avoid div0 until calibrated */
+    dev->state = S_IDLE;
+    dev->busy = 0;
+}
+
+/* init SCK pins like original code */
+void HX711_InitPins(hx711_t *dev)
+{
+    sck_high(dev);
+    HAL_Delay(10);
+    sck_low(dev);
+    HAL_Delay(10);
+}
+
+/* Blocking single read - identical behaviour to your original blocking function */
+int32_t HX711_ReadBlocking(hx711_t *dev)
+{
     uint32_t data = 0;
-    uint32_t startTime = HAL_GetTick();
-    // wait for DT low
-    while(HAL_GPIO_ReadPin(DT_PORT, DT_PIN) == GPIO_PIN_SET)
-    {
-        if(HAL_GetTick() - startTime > 200) return 0; // timeout
+    uint32_t start = HAL_GetTick();
+    while (dt_state(dev) == GPIO_PIN_SET) {
+        if ((HAL_GetTick() - start) > WAIT_READY_TIMEOUT_MS) return 0;
     }
-    for(int8_t i = 0; i < 24; i++)
-    {
-        HAL_GPIO_WritePin(SCK_PORT, SCK_PIN, GPIO_PIN_SET);
-        microDelay(1);
-        data = (data << 1) | (HAL_GPIO_ReadPin(DT_PORT, DT_PIN) == GPIO_PIN_SET ? 1 : 0);
-        HAL_GPIO_WritePin(SCK_PORT, SCK_PIN, GPIO_PIN_RESET);
-        microDelay(1);
+    for (int8_t i = 0; i < 24; ++i) {
+        sck_high(dev);
+        uint32_t t0 = now_us(dev->htim_us);
+        while ((uint32_t)(now_us(dev->htim_us) - t0) < PULSE_HIGH_US);
+        data = (data << 1) | (dt_state(dev) == GPIO_PIN_SET ? 1u : 0u);
+        sck_low(dev);
+        t0 = now_us(dev->htim_us);
+        while ((uint32_t)(now_us(dev->htim_us) - t0) < PULSE_LOW_US);
+    }
+    /* extra pulse(s) for gain */
+    for (uint8_t p = 0; p < dev->extra_pulses; ++p) {
+        sck_high(dev);
+        uint32_t t0 = now_us(dev->htim_us);
+        while ((uint32_t)(now_us(dev->htim_us) - t0) < PULSE_HIGH_US);
+        sck_low(dev);
+        t0 = now_us(dev->htim_us);
+        while ((uint32_t)(now_us(dev->htim_us) - t0) < PULSE_LOW_US);
     }
 
-    // sign-extend 24-bit two's complement to 32-bit signed
-    if (data & 0x800000) {
-        data |= 0xFF000000; // set upper bits to 1
-    }
-
-    // pulse once for gain (you already do one pulse in original code; ensure controller expects this)
-    HAL_GPIO_WritePin(SCK_PORT, SCK_PIN, GPIO_PIN_SET);
-    microDelay(1);
-    HAL_GPIO_WritePin(SCK_PORT, SCK_PIN, GPIO_PIN_RESET);
-    microDelay(1);
-
+    if (data & 0x800000) data |= 0xFF000000u;
     return (int32_t)data;
-};
+}
 
-int32_t getAverageRaw(uint8_t samples){
-    int64_t total = 0;
-    for(uint8_t i=0; i<samples; i++){
-        int32_t r = getHX711();
-        total += r;
+int32_t HX711_GetAverageBlocking(hx711_t *dev, uint8_t samples)
+{
+    int64_t acc = 0;
+    for (uint8_t i = 0; i < samples; ++i) {
+        acc += HX711_ReadBlocking(dev);
     }
-    return (int32_t)(total / samples);
-};
+    return (int32_t)(acc / samples);
+}
 
-
-void HX711_calibrate_with_known_weight(int32_t knownWeight_mg)
+/* Start asynchronous averaged read */
+int HX711_StartReadAsync(hx711_t *dev, uint8_t samples, hx711_cb_t cb, void *user)
 {
-    // measure tare
-    //I2C_LCD_SetCursor(MyI2C_LCD,0,1);
-    //I2C_LCD_WriteString(MyI2C_LCD,"Remove load...");
+    if (dev->busy) return -1;
+    dev->busy = 1;
+    dev->cb = cb;
+    dev->cb_user = user;
+    dev->samples_target = samples ? samples : 1;
+    dev->samples_done = 0;
+    dev->accum = 0;
+    dev->state = S_WAIT_READY;
+    dev->start_tick_ms = HAL_GetTick();
+    return 0;
+}
+
+/* Start asynchronous calibration (tare then known weight) */
+int HX711_StartCalibrateAsync(hx711_t *dev,
+                              int32_t knownWeight_mg,
+                              uint8_t samples_for_tare,
+                              uint8_t samples_for_known,
+                              hx711_cb_t cb, void *user)
+{
+    if (dev->busy) return -1;
+    dev->busy = 1;
+    dev->cb = cb;
+    dev->cb_user = user;
+    dev->calibrate_known_weight = knownWeight_mg;
+    dev->cal_samples_tare = samples_for_tare ? samples_for_tare : 10;
+    dev->cal_samples_known = samples_for_known ? samples_for_known : 10;
+    dev->samples_target = dev->cal_samples_tare;
+    dev->samples_done = 0;
+    dev->accum = 0;
+    dev->state = S_WAIT_READY;
+    dev->start_tick_ms = HAL_GetTick();
+    return 0;
+}
+
+/* Called when one averaged sample set completes */
+static void sample_complete(hx711_t *dev, int32_t raw)
+{
+    dev->accum += (int64_t)raw;
+    dev->samples_done++;
+    if (dev->samples_done < dev->samples_target) {
+        dev->state = S_WAIT_READY;
+        dev->start_tick_ms = HAL_GetTick();
+        return;
+    }
+
+    int32_t avg_raw = (int32_t)(dev->accum / dev->samples_done);
+
+    /* Calibration path: handled in two stages (tare then known) */
+    if (dev->cal_samples_tare && (dev->samples_target == dev->cal_samples_tare)) {
+        dev->tare = avg_raw;
+        /* switch to known-weight measurement stage */
+        dev->samples_target = dev->cal_samples_known;
+        dev->samples_done = 0;
+        dev->accum = 0;
+        dev->cal_samples_tare = 0; /* mark tare stage done */
+        dev->state = S_WAIT_READY;
+        dev->start_tick_ms = HAL_GetTick();
+        return;
+    }
+
+    if ((dev->cal_samples_tare == 0) && (dev->samples_target == dev->cal_samples_known)) {
+        int32_t raw_known = avg_raw;
+        int32_t diff = raw_known - dev->tare;
+        if (diff <= 0) diff = 1;
+        dev->known_counts_per_mg = (int32_t)(((int64_t)diff * (int64_t)dev->FP) / (int64_t)dev->calibrate_known_weight);
+        dev->busy = 0;
+        dev->state = S_IDLE;
+        if (dev->cb) dev->cb(dev, HX_OP_CALIBRATE, 0, dev->cb_user);
+        return;
+    }
+
+    /* Normal read completed */
+    dev->busy = 0;
+    dev->state = S_IDLE;
+    int64_t diff = (int64_t)avg_raw - (int64_t)dev->tare;
+    int32_t weight_mg = (int32_t)(((int64_t)diff * (int64_t)dev->FP) / (int64_t)dev->known_counts_per_mg);
+    if (dev->cb) dev->cb(dev, HX_OP_READ, weight_mg, dev->cb_user);
+}
+
+/* Main state machine; call frequently from main loop */
+void HX711_Process(hx711_t *dev)
+{
+    if (!dev->busy) return;
+
+    uint32_t nowu = now_us(dev->htim_us);
+
+    switch (dev->state) {
+    case S_WAIT_READY:
+        if (dt_state(dev) == GPIO_PIN_RESET) {
+            dev->bit_index = 0;
+            dev->current_raw = 0;
+            dev->state = S_BIT_RISE;
+            dev->target_us = nowu;
+        } else {
+            if ((HAL_GetTick() - dev->start_tick_ms) > WAIT_READY_TIMEOUT_MS) {
+                dev->busy = 0;
+                dev->state = S_TIMEOUT;
+                if (dev->cb) dev->cb(dev, HX_OP_READ, 0, dev->cb_user);
+            }
+        }
+        break;
+
+    case S_BIT_RISE: {
+        int32_t diff = (int32_t)((int32_t)nowu - (int32_t)dev->target_us);
+        if (diff < 0) break;
+        sck_high(dev);
+        dev->target_us = nowu + PULSE_HIGH_US;
+        dev->state = S_BIT_FALL;
+        break;
+    }
+
+    case S_BIT_FALL: {
+        int32_t diff = (int32_t)((int32_t)nowu - (int32_t)dev->target_us);
+        if (diff < 0) break;
+        dev->current_raw = (dev->current_raw << 1) | ( (dt_state(dev) == GPIO_PIN_SET) ? 1u : 0u );
+        sck_low(dev);
+        dev->bit_index++;
+        if (dev->bit_index < 24) {
+            dev->target_us = nowu + PULSE_LOW_US;
+            dev->state = S_BIT_RISE;
+        } else {
+            dev->target_us = nowu + PULSE_LOW_US;
+            dev->state = S_POST_PULSES;
+            dev->bit_index = 0;
+        }
+        break;
+    }
+
+    case S_POST_PULSES: {
+        int32_t diff = (int32_t)((int32_t)nowu - (int32_t)dev->target_us);
+        if (diff < 0) break;
+        if (dev->bit_index < dev->extra_pulses) {
+            /* start pulse */
+            sck_high(dev);
+            dev->target_us = nowu + PULSE_HIGH_US;
+            dev->bit_index++;
+            /* next loop we will set SCK low and continue */
+            dev->state = S_BIT_FALL;
+        } else {
+            uint32_t data = dev->current_raw;
+            if (data & 0x800000) data |= 0xFF000000u;
+            sample_complete(dev, (int32_t)data);
+        }
+        break;
+    }
+
+    default:
+        /* no-op */
+        break;
+    }
+}
+
+/* Blocking calibration and weigh helpers */
+void HX711_CalibrateBlocking(hx711_t *dev, int32_t knownWeight_mg)
+{
     HAL_Delay(1000);
-    tare = getAverageRaw(10);
-    // show tare
-    //I2C_LCD_SetCursor(MyI2C_LCD,0,1);
-    //I2C_LCD_WriteString(MyI2C_LCD,"Tare done       ");
+    dev->tare = HX711_GetAverageBlocking(dev, 10);
     HAL_Delay(500);
+    HAL_Delay(3000);
+    int32_t raw_known = HX711_GetAverageBlocking(dev, 10);
+    int32_t diff = raw_known - dev->tare;
+    if (diff <= 0) diff = 1;
+    dev->known_counts_per_mg = (int32_t)(((int64_t)diff * (int64_t)dev->FP) / (int64_t)knownWeight_mg);
+}
 
-    // prompt to place known weight
-    //I2C_LCD_SetCursor(MyI2C_LCD,0,1);
-    //I2C_LCD_WriteString(MyI2C_LCD,"Place known wt ");
-    HAL_Delay(3000); // give user time to put weight
-
-    int32_t raw_known = getAverageRaw(10);
-    int32_t diff = raw_known - tare;
-    if (diff <= 0) diff = 1; // avoid div-by-zero or negative
-
-    // compute counts-per-mg scaled by FP
-    knownHX711 = (int32_t)(( (int64_t)diff * FP ) / (int64_t)knownWeight_mg);
-
-    // display computed value for debugging
-    //I2C_LCD_SetCursor(MyI2C_LCD,0,1);
-    //I2C_LCD_WriteString(MyI2C_LCD,"Cal done        ");
-    HAL_Delay(500);
-};
-
-int32_t HX711_weigh()
+int32_t HX711_WeighBlocking(hx711_t *dev)
 {
-    int32_t raw = getAverageRaw(1);
-    int32_t diff = raw - tare;
-    // compute weight_mg = (diff * FP) / knownHX711
-    int32_t weight_mg = (int32_t)(( (int64_t)diff * FP ) / (int64_t)knownHX711);
+    int32_t raw = HX711_GetAverageBlocking(dev, 1);
+    int64_t diff = (int64_t)raw - (int64_t)dev->tare;
+    int32_t weight_mg = (int32_t)(((int64_t)diff * (int64_t)dev->FP) / (int64_t)dev->known_counts_per_mg);
     return weight_mg;
-};
-
-
-
+}

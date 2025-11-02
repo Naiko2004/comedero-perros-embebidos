@@ -7,3 +7,4 @@
 ../Core/Src/DC_MOTOR.c:271:10:DC_MOTOR_Get_MaxFreq	24	static
 ../Core/Src/DC_MOTOR.c:283:6:DC_MOTOR_Acelerar	16	static
 ../Core/Src/DC_MOTOR.c:313:6:DC_MOTOR_Frenar	16	static
+../Core/Src/DC_MOTOR.c:343:6:DC_MOTOR_Ajustar_velocidad	24	static

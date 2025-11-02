@@ -3,6 +3,8 @@
 	<item key="hasShownOverlayPopupBefore" value="true"/>
 	<item key="replaceBarOpen" value="false"/>
 	<list key="searchhistory">
+		<item value="configuracion_probar_motor"/>
+		<item value="hx711_weigh()"/>
 		<item value="dir_cw"/>
 		<item value="servo_moveto"/>
 		<item value="irq"/>

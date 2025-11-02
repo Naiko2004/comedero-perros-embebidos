@@ -286,7 +286,7 @@ void DC_MOTOR_Acelerar(uint8_t au8_MOTOR_Instance, uint16_t *au16_SPEED)
 	{
 	case 0:
 		*au16_SPEED = LOW_SPEED;
-		DC_MOTOR_Start(au8_MOTOR_Instance, DIR_CW, *au16_SPEED);
+		DC_MOTOR_Start(au8_MOTOR_Instance, DIR_CCW, *au16_SPEED);
 		return;
 		break;
 	case LOW_SPEED:
@@ -339,3 +339,28 @@ void DC_MOTOR_Frenar(uint8_t au8_MOTOR_Instance, uint16_t *au16_SPEED)
 	}
 	DC_MOTOR_Set_Speed(au8_MOTOR_Instance, *au16_SPEED);
 };
+
+void DC_MOTOR_Ajustar_velocidad(uint8_t au8_MOTOR_Instance, uint16_t *au16_SPEED, int32_t *_actual, int32_t objetivo)
+{
+	if( objetivo - *_actual <= 32000)
+	{
+		*au16_SPEED = LOW_SPEED;
+	}else if(objetivo - *_actual <= 64000)
+	{
+		*au16_SPEED = LOW_SPEED_PLUS;
+	}else if(objetivo - *_actual <= 96000)
+	{
+		*au16_SPEED = NORMAL_SPEED;
+	}else if(objetivo - *_actual <= 128000)
+	{
+		*au16_SPEED = NORMAL_SPEED_PLUS;
+	}else if(objetivo - *_actual <= 142000)
+	{
+		*au16_SPEED = HIGH_SPEED;
+	}else {
+		*au16_SPEED = HIGH_SPEED_PLUS;
+	}
+
+	DC_MOTOR_Set_Speed(au8_MOTOR_Instance, *au16_SPEED);
+}
+
