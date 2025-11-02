@@ -1,0 +1,3 @@
+../Core/Src/BARRERA_IR.c:12:6:IR_Barrier_init	8	static
+../Core/Src/BARRERA_IR.c:16:5:readBarrier	24	static
+../Core/Src/BARRERA_IR.c:32:6:delay_us	24	static

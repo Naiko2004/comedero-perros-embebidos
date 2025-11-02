@@ -1,0 +1,38 @@
+/*
+ * BARRERA_IR.c
+ *
+ *  Created on: Oct 27, 2025
+ *      Author: nico2
+ */
+
+#include "BARRERA_IR.h"
+
+volatile uint32_t ir_count = 0;
+
+int readBarrier(unsigned int len)
+{
+	for(unsigned int i = 0; i < len; i ++)
+	{
+		HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+		delay_us(600);
+		HAL_TIM_PWM_Stop(&htim2, TIM_CHANNEL_1);
+		delay_us(900);
+	}
+
+	uint32_t cnt = ir_count;
+	ir_count = 0;
+	HAL_Delay(22); // min pause.
+	return (int)cnt;
+}
+
+void delay_us(uint32_t us)
+{
+    uint32_t start = __HAL_TIM_GET_COUNTER(&htim3);
+    /* if timer stopped / not running, avoid infinite loop */
+    uint32_t timeout = us + 1000;
+    while ((__HAL_TIM_GET_COUNTER(&htim3) - start) < us)
+    {
+        if (--timeout == 0) break;
+    }
+}
+

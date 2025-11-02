@@ -34,8 +34,11 @@
 
 typedef enum DC_MOTOR_SPEEDS {
 	LOW_SPEED = 700,
+	LOW_SPEED_PLUS = 750,
 	NORMAL_SPEED = 800,
+	NORMAL_SPEED_PLUS = 900,
 	HIGH_SPEED = 1000,
+	HIGH_SPEED_PLUS = 1200,
 } Motor_speeds;
 
 typedef struct
@@ -51,6 +54,9 @@ typedef struct
 	uint8_t        PWM_RES_BITS;
 }DC_MOTOR_CfgType;
 
+
+void DC_MOTOR_Acelerar(uint8_t au8_MOTOR_Instance, uint16_t *au16_SPEED);
+void DC_MOTOR_Frenar(uint8_t au8_MOTOR_Instance, uint16_t *au16_SPEED);
 
 /*-----[ Prototypes For All Functions ]-----*/
 

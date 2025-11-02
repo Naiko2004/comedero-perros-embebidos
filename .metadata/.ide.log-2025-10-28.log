@@ -1,0 +1,59 @@
+2025-10-29 00:36:04,977 [WARN] IP:2250 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2025-10-29 00:36:05,040 [WARN] IP:2250 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2025-10-29 00:36:05,205 [WARN] IP:2250 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2025-10-29 00:36:05,205 [WARN] IP:2250 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2025-10-29 00:36:05,205 [WARN] IP:2250 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2025-10-29 00:36:05,205 [WARN] IP:2250 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2025-10-29 00:36:05,403 [WARN] IP:2250 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2025-10-29 00:36:05,403 [WARN] IP:2250 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2025-10-29 00:36:05,422 [WARN] IP:2250 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2025-10-29 00:36:05,422 [WARN] IP:2250 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2025-10-29 00:36:10,167 [WARN] IP:2250 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2025-10-29 00:36:10,167 [WARN] IP:2250 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2025-10-29 00:36:12,869 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 326468576 Bytes (671088640)
+2025-10-29 00:36:13,933 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 343245792 Bytes (671088640)
+2025-10-29 00:36:15,755 [INFO] UtilMem:75 - End SaveConfig() Used Memory: 383091680 Bytes (671088640)
+2025-10-29 00:36:17,253 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: RTC
+2025-10-29 00:36:17,253 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: NVIC
+2025-10-29 00:36:17,253 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: TIM1_8F1
+2025-10-29 00:36:17,253 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: SYS
+2025-10-29 00:36:17,253 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: GPIO
+2025-10-29 00:36:17,253 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: RCC
+2025-10-29 00:36:17,256 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: I2C
+2025-10-29 00:36:17,256 [INFO] BlockDiagram:2775 - set Specific Code input for plugin: I2C
+2025-10-29 00:36:17,257 [INFO] CodeGenerator:892 - code generatio: config db path: C:\ST\STM32CubeIDE_1.19.0\STM32CubeIDE\plugins\com.st.stm32cube.common.mx_6.15.0.202507011659\\db\
+2025-10-29 00:36:17,263 [WARN] IP:2250 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2025-10-29 00:36:17,263 [WARN] IP:2250 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2025-10-29 00:36:17,264 [WARN] IP:2250 - I2C_Coeff_DF not found: check if there is a RefParameter without a condition.
+2025-10-29 00:36:17,264 [WARN] IP:2250 - Analog_Filter not found: check if there is a RefParameter without a condition.
+2025-10-29 00:36:17,447 [INFO] CodeEngine:265 - oldGeneratedFile, C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\COMEDERO_INTEGRACION\MXTmpFiles\license.tmp_save
+2025-10-29 00:36:18,357 [INFO] CodeEngine:289 - Generated code: C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\COMEDERO_INTEGRACION\MXTmpFiles\license.tmp
+2025-10-29 00:36:18,684 [INFO] CodeEngine:265 - oldGeneratedFile, C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\COMEDERO_INTEGRACION\MXTmpFiles\gpio.tmp_save
+2025-10-29 00:36:19,035 [INFO] CodeEngine:289 - Generated code: C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\COMEDERO_INTEGRACION\MXTmpFiles\gpio.tmp
+2025-10-29 00:36:20,078 [INFO] CodeEngine:265 - oldGeneratedFile, C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\COMEDERO_INTEGRACION\Core\Src\stm32f1xx_it.c_save
+2025-10-29 00:36:20,407 [INFO] CodeEngine:289 - Generated code: C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\COMEDERO_INTEGRACION\Core\Src\stm32f1xx_it.c
+2025-10-29 00:36:20,416 [INFO] CodeEngine:265 - oldGeneratedFile, C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\COMEDERO_INTEGRACION\Core\Inc\stm32f1xx_it.h_save
+2025-10-29 00:36:20,608 [INFO] CodeEngine:289 - Generated code: C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\COMEDERO_INTEGRACION\Core\Inc\stm32f1xx_it.h
+2025-10-29 00:36:20,842 [INFO] CodeEngine:265 - oldGeneratedFile, C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\COMEDERO_INTEGRACION\Core\Src\stm32f1xx_hal_msp.c_save
+2025-10-29 00:36:21,087 [INFO] CodeEngine:289 - Generated code: C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\COMEDERO_INTEGRACION\Core\Src\stm32f1xx_hal_msp.c
+2025-10-29 00:36:21,096 [INFO] CodeEngine:265 - oldGeneratedFile, C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\COMEDERO_INTEGRACION\MXTmpFiles\system.tmp_save
+2025-10-29 00:36:21,251 [INFO] CodeEngine:289 - Generated code: C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\COMEDERO_INTEGRACION\MXTmpFiles\system.tmp
+2025-10-29 00:36:21,261 [INFO] CodeEngine:321 - oldGeneratedFile, C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\COMEDERO_INTEGRACION\Core\Inc\stm32f1xx_hal_conf.h_save
+2025-10-29 00:36:21,322 [INFO] CodeEngine:345 - Generated code: C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\COMEDERO_INTEGRACION\Core\Inc\stm32f1xx_hal_conf.h
+2025-10-29 00:36:21,384 [INFO] ApiDbMcu:532 - Load IP Config File for I2C1
+2025-10-29 00:36:21,385 [INFO] ApiDbMcu:532 - Load IP Config File for I2C2
+2025-10-29 00:36:21,436 [INFO] ApiDbMcu:532 - Load IP Config File for RTC
+2025-10-29 00:36:21,464 [INFO] ApiDbMcu:532 - Load IP Config File for TIM2
+2025-10-29 00:36:21,469 [INFO] ApiDbMcu:532 - Load IP Config File for RCC
+2025-10-29 00:36:21,472 [WARN] IPConfigManager:3811 - IP not found : TIM
+2025-10-29 00:36:21,473 [WARN] CodeGenerator:4259 - IP not found : null
+2025-10-29 00:36:21,487 [INFO] CodeEngine:265 - oldGeneratedFile, C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\COMEDERO_INTEGRACION\Core\Inc\main.h_save
+2025-10-29 00:36:21,624 [INFO] CodeEngine:289 - Generated code: C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\COMEDERO_INTEGRACION\Core\Inc\main.h
+2025-10-29 00:36:21,634 [INFO] CodeEngine:265 - oldGeneratedFile, C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\COMEDERO_INTEGRACION\Core\Src\main.c_save
+2025-10-29 00:36:22,102 [INFO] CodeEngine:289 - Generated code: C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\COMEDERO_INTEGRACION\Core\Src\main.c
+2025-10-29 00:36:23,242 [INFO] ProjectBuilder:3606 - Time for Copy HAL[1] : 180mS.
+2025-10-29 00:36:23,262 [INFO] ProjectBuilder:5216 - Project Generator version: 4.7.0-B52
+2025-10-29 00:36:23,342 [INFO] ConfigFileManager:1595 - The Die is : DIE410
+2025-10-29 00:36:23,351 [INFO] ApiDbMcu:532 - Load IP Config File for FATFS
+2025-10-29 00:36:23,358 [INFO] ApiDbMcu:532 - Load IP Config File for FREERTOS
+2025-10-29 00:36:23,373 [INFO] ApiDbMcu:532 - Load IP Config File for USB_DEVICE

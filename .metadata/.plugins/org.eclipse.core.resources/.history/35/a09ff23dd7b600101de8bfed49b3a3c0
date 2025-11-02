@@ -1,0 +1,53 @@
+/* SW_PWM.c */
+#include "SW_PWM.h"
+
+// Configuración global (ejemplo para el canal 2, como en su SERVO_cfg.c original)
+SW_PWM_Config_t g_SW_PWM_Cfg[4] =
+{
+    // Solo configuramos el Canal 2 por ahora (TIM2_CH2 en PA1)
+    {SW_PWM_CH2, GPIOA, GPIO_PIN_1, (uint32_t*)&TIM2->CCR2, 1500}
+    // Añadir más canales aquí si es necesario
+};
+
+TIM_HandleTypeDef g_SW_PWM_TIM_Handle; // Manejador global del Timer 2
+
+void SW_PWM_Init(SW_PWM_Channel_t Channel, GPIO_TypeDef * Port, uint16_t Pin)
+{
+    // 1. Configuración del GPIO (Modo Output Push-Pull)
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    // (Habilitar el reloj del GPIO A, B, C, etc.)
+    __HAL_RCC_GPIOA_CLK_ENABLE(); // Asumiendo que PA1 es el pin (ajustar si es necesario)
+
+    GPIO_InitStruct.Pin = Pin;
+    // Opcionalmente, usar AF_PP si se quiere que el TIM maneje el pin.
+    // Para simplificar el control por software en la ISR:
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+    HAL_GPIO_Init(Port, &GPIO_InitStruct);
+
+    // 2. Configuración del Timer 2 (Base de tiempo y Output Compare)
+    __HAL_RCC_TIM2_CLK_ENABLE();
+
+    g_SW_PWM_TIM_Handle.Instance = SW_PWM_TIMER_INSTANCE;
+    g_SW_PWM_TIM_Handle.Init.Prescaler = 16 - 1; // 16 MHz / 16 = 1 MHz (1 us/tick)
+    g_SW_PWM_TIM_Handle.Init.CounterMode = TIM_COUNTERMODE_UP;
+    g_SW_PWM_TIM_Handle.Init.Period = SW_PWM_PERIOD_US - 1; // 20000 - 1 = 19999
+    g_SW_PWM_TIM_Handle.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+    g_SW_PWM_TIM_Handle.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+    HAL_TIM_Base_Init(&g_SW_PWM_TIM_Handle);
+
+    // 3. Configuración del Canal en modo Output Compare (No PWM)
+    TIM_OC_InitTypeDef sConfigOC = {0};
+    sConfigOC.OCMode = TIM_OCMODE_TIMING; // Modo Timing (solo interrupción)
+    sConfigOC.Pulse = g_SW_PWM_Cfg[Channel - 1].CompareValue; // Valor inicial del pulso (1.5ms)
+    sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+    sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
+
+    // Inicializar el canal OC e HABILITAR LA INTERRUPCIÓN
+    HAL_TIM_OC_ConfigChannel(&g_SW_PWM_TIM_Handle, &sConfigOC, Channel);
+    HAL_TIM_OC_Start_IT(&g_SW_PWM_TIM_Handle, Channel); // Inicia el timer e interrupción
+
+    // 4. Habilitar la interrupción del Timer 2 a nivel NVIC
+    HAL_NVIC_SetPriority(TIM2_IRQn, 0, 0); // Ajustar la prioridad si es necesario
+    HAL_NVIC_EnableIRQ(TIM2_IRQn);
+}

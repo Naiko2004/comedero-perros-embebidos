@@ -1,0 +1,2 @@
+../Core/Src/BOTONES.c:10:6:Boton_init	24	static
+../Core/Src/BOTONES.c:21:6:Boton_EXTI_Callback	24	static

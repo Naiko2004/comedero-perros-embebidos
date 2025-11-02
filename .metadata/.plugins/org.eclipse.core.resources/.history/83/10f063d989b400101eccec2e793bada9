@@ -1,0 +1,29 @@
+/*
+ * BOTONES.c
+ *
+ *  Created on: Oct 28, 2025
+ *      Author: nico2
+ */
+
+#include "BOTONES.h"
+
+void Boton_init(Boton_HandlerTypeDef *hb, GPIO_TypeDef* _DIR_GPIO,
+		uint16_t _PIN_GPIO){
+	hb->DIR_GPIO = _DIR_GPIO;
+	hb->PIN_GPIO = _PIN_GPIO;
+	hb->FLAG_EVENTO = 0;
+	hb->__tiempo_presionado = 0;
+
+
+};
+
+void Boton_EXTI_Callback(Boton_HandlerTypeDef *hb){
+	uint32_t tiempo_ahora = HAL_GetTick();
+
+	if( (tiempo_ahora - hb->__tiempo_presionado) >=  DEBOUNCE_MS)
+	{
+		hb->FLAG_EVENTO = 1;
+		hb->__tiempo_presionado = HAL_GetTick();
+	}
+};
+

@@ -1,0 +1,166 @@
+/* SW_PWM.c */
+#include "SW_PWM.h"
+// Necesita que se declare o se pase el handle del Timer 2.
+// Para el ejemplo, usaremos la declaración para un único manejador del Timer 2:
+// extern TIM_HandleTypeDef htim2;
+
+SW_PWM_Config_t g_SW_PWM_Cfg[SW_PWM_MAX_CHANNELS] = {0};
+
+// Mapeo de TIM_CHANNEL_x a un índice de array (0-3)
+#define CH_TO_INDEX(sw_ch) ((sw_ch) - 1)
+
+void SW_PWM_Init_Channel(SW_PWM_Channel_t sw_ch, TIM_TypeDef *tim_inst, uint32_t tim_ch_id, GPIO_TypeDef *port, uint16_t pin)
+{
+    uint8_t index = CH_TO_INDEX(sw_ch);
+    extern TIM_HandleTypeDef htim2;
+
+
+    // 1. Configuración del GPIO (Modo Output Push-Pull)
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    // (Asumimos que el reloj del GPIO ya está habilitado)
+
+    GPIO_InitStruct.Pin = pin;
+    // Usamos OUTPUT_PP para Bit-Banging dentro de la ISR
+    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+    HAL_GPIO_Init(port, &GPIO_InitStruct);
+
+    // Poner el pin en estado BAJO inicialmente
+    HAL_GPIO_WritePin(port, pin, GPIO_PIN_RESET);
+
+    // 2. Almacenar configuración
+    g_SW_PWM_Cfg[index].Initialized = 1;
+    g_SW_PWM_Cfg[index].Running = 0;
+    g_SW_PWM_Cfg[index].TIM_Instance = tim_inst;
+    g_SW_PWM_Cfg[index].Channel_ID = tim_ch_id;
+    g_SW_PWM_Cfg[index].GPIO_Port = port;
+    g_SW_PWM_Cfg[index].GPIO_Pin = pin;
+
+    // Asignación del puntero CCRx
+    if (tim_inst == TIM2) {
+        if (tim_ch_id == TIM_CHANNEL_1) g_SW_PWM_Cfg[index].TIM_CCRx = (uint32_t*)&TIM2->CCR1;
+        else if (tim_ch_id == TIM_CHANNEL_2) g_SW_PWM_Cfg[index].TIM_CCRx = (uint32_t*)&TIM2->CCR2;
+        else if (tim_ch_id == TIM_CHANNEL_3) g_SW_PWM_Cfg[index].TIM_CCRx = (uint32_t*)&TIM2->CCR3;
+        else if (tim_ch_id == TIM_CHANNEL_4) g_SW_PWM_Cfg[index].TIM_CCRx = (uint32_t*)&TIM2->CCR4;
+    }
+
+    // Valor de pulso por defecto (1.5ms)
+    g_SW_PWM_Cfg[index].Target_Pulse_us = 1500;
+    g_SW_PWM_Cfg[index].Target_Period_us = 20000;
+
+    // 3. Configurar el canal OC en modo Timing para la interrupción
+    TIM_OC_InitTypeDef sConfigOC = {0};
+    sConfigOC.OCMode = TIM_OCMODE_TIMING;
+    sConfigOC.Pulse = 0; // El valor inicial será 0, la interrupción lo ajustará
+    sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
+
+    // Asumimos que el manejador (htim) está disponible globalmente.
+    // Necesitará el handle de TIM2 para esta parte.
+    HAL_TIM_OC_ConfigChannel(&htim2, &sConfigOC, tim_ch_id);
+}
+
+void SW_PWM_Start(SW_PWM_Channel_t sw_ch)
+{
+    uint8_t index = CH_TO_INDEX(sw_ch);
+    if (!g_SW_PWM_Cfg[index].Initialized || g_SW_PWM_Cfg[index].Running) return;
+
+    // Asumimos que el handle htim2 es el correcto y global
+    extern TIM_HandleTypeDef htim2;
+
+    // 1. Poner el registro CCR en el valor actual del contador (TIM2->CNT)
+    // Esto asegura que el primer pulso comience en el siguiente tick.
+    *g_SW_PWM_Cfg[index].TIM_CCRx = __HAL_TIM_GET_COUNTER(&htim2);
+
+    // 2. Iniciar el canal OC con interrupción
+    HAL_TIM_OC_Start_IT(&htim2, g_SW_PWM_Cfg[index].Channel_ID);
+
+    g_SW_PWM_Cfg[index].Running = 1;
+}
+
+void SW_PWM_Stop(SW_PWM_Channel_t sw_ch)
+{
+	extern TIM_HandleTypeDef htim2;
+	uint8_t index = CH_TO_INDEX(sw_ch);
+	    if (!g_SW_PWM_Cfg[index].Initialized || !g_SW_PWM_Cfg[index].Running) return;
+
+	    // 1. Detener la interrupción del canal
+	    HAL_TIM_OC_Stop_IT(&htim2, g_SW_PWM_Cfg[index].Channel_ID);
+
+	    // 2. RECONFIGURAR el pin como GPIO Output Push-Pull
+	    //    Esto anula cualquier control residual que el hardware del Timer pudiera tener
+	    GPIO_InitTypeDef GPIO_InitStruct = {0};
+	    GPIO_InitStruct.Pin = g_SW_PWM_Cfg[index].GPIO_Pin;
+	    // Modo de Salida (ya no AF)
+	    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+
+	    HAL_GPIO_Init(g_SW_PWM_Cfg[index].GPIO_Port, &GPIO_InitStruct);
+
+	    // 3. Asegurar que el pin quede BAJO (sin pulso)
+	    HAL_GPIO_WritePin(g_SW_PWM_Cfg[index].GPIO_Port, g_SW_PWM_Cfg[index].GPIO_Pin, GPIO_PIN_RESET);
+
+	    g_SW_PWM_Cfg[index].Running = 0;
+}
+
+void SW_PWM_SetPulse(SW_PWM_Channel_t sw_ch, uint16_t pulse_us)
+{
+    uint8_t index = CH_TO_INDEX(sw_ch);
+    if (!g_SW_PWM_Cfg[index].Initialized) return;
+
+    g_SW_PWM_Cfg[index].Target_Pulse_us = pulse_us;
+
+}
+
+void SW_PWM_SetPeriod(SW_PWM_Channel_t sw_ch, uint16_t period_us)
+{
+	uint8_t index = CH_TO_INDEX(sw_ch);
+	if(!g_SW_PWM_Cfg[index].Initialized) return;
+
+	g_SW_PWM_Cfg[index].Target_Period_us = period_us;
+}
+
+
+// Esta función ASUME que la interrupción que la llamó fue la de su canal OC
+void SW_PWM_Handle_OC_Interrupt(TIM_HandleTypeDef *htim, SW_PWM_Channel_t sw_ch)
+{
+    uint8_t index = CH_TO_INDEX(sw_ch);
+    SW_PWM_Config_t *cfg = &g_SW_PWM_Cfg[index];
+
+    if (!cfg->Running) return;
+
+    // Leer el estado actual del pin
+    GPIO_PinState currentState = HAL_GPIO_ReadPin(cfg->GPIO_Port, cfg->GPIO_Pin);
+
+    // Leer el valor actual del contador (para cálculo modular)
+    uint32_t current_cnt = __HAL_TIM_GET_COUNTER(htim);
+
+    // El CCR se usa para establecer el próximo evento.
+
+    if (currentState == GPIO_PIN_RESET)
+    {
+        // --- INICIO DEL PULSO (Pin BAJO -> Pin ALTO) ---
+
+        // Poner el pin ALTO
+        HAL_GPIO_WritePin(cfg->GPIO_Port, cfg->GPIO_Pin, GPIO_PIN_SET);
+
+        // El próximo evento será el FIN del pulso
+        uint32_t next_ccr = current_cnt + cfg->Target_Pulse_us;
+
+        // Usamos una operación modular (aunque con 16 bits en el F103 no debería ser necesario
+        // si el ARR es grande, es más seguro si el ARR es pequeño o si se supera el valor de 16 bits)
+        *cfg->TIM_CCRx = next_ccr;
+    }
+    else // currentState == GPIO_PIN_SET
+    {
+        // --- FIN DEL PULSO (Pin ALTO -> Pin BAJO) ---
+
+        // Poner el pin BAJO
+        HAL_GPIO_WritePin(cfg->GPIO_Port, cfg->GPIO_Pin, GPIO_PIN_RESET);
+
+        // El próximo evento será el INICIO del siguiente ciclo de 20ms
+        uint32_t time_to_next_cycle = cfg->Target_Period_us - cfg->Target_Pulse_us;
+        uint32_t next_ccr = current_cnt + time_to_next_cycle;
+
+        *cfg->TIM_CCRx = next_ccr;
+    }
+}

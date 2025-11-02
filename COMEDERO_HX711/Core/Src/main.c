@@ -39,6 +39,7 @@
 #define MyI2C_LCD I2C_LCD_1
 
 #define FIXED_POINT_SCALE 1000
+#define FP FIXED_POINT_SCALE
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -56,9 +57,8 @@ I2C_HandleTypeDef hi2c1;
 TIM_HandleTypeDef htim2;
 
 /* USER CODE BEGIN PV */
-int32_t tare = -151452;
-int32_t knownOriginal = 1 * FIXED_POINT_SCALE; // 1 MILIGRAMO
-int32_t knownHX711 = 1 * FIXED_POINT_SCALE; // 1 MILIGRAMO
+int32_t tare = 101362 ; // -151452+50500+300;
+int32_t knownHX711 = 385; // 1 MILIGRAMO
 int32_t weight;
 
 /* USER CODE END PV */
@@ -70,8 +70,11 @@ static void MX_TIM2_Init(void);
 static void MX_I2C1_Init(void);
 /* USER CODE BEGIN PFP */
 void microDelay(uint16_t delay);
+int32_t getAverageRaw(uint8_t samples);
 int32_t getHX711(void);
 int32_t weigh();
+void calibrate_with_known_weight(int32_t knownWeight_mg);
+
 
 /* USER CODE END PFP */
 
@@ -129,6 +132,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+
 	  weight = weigh();
 	  I2C_LCD_SetCursor(MyI2C_LCD, 0, 1);
 	  I2C_LCD_WriteString(MyI2C_LCD, "                ");
@@ -136,6 +140,9 @@ int main(void)
 	  I2C_LCD_WriteInt32(MyI2C_LCD, weight);
 	  I2C_LCD_SetCursor(MyI2C_LCD, 14, 1);
 	  I2C_LCD_WriteString(MyI2C_LCD, "mg");
+
+
+	 // calibrate_with_known_weight(64000);
 
     /* USER CODE END WHILE */
 
@@ -306,52 +313,87 @@ void microDelay(uint16_t delay){
     uint16_t start = __HAL_TIM_GET_COUNTER(&htim2);
     while((uint16_t)(__HAL_TIM_GET_COUNTER(&htim2) - start) < delay);
 };
+
+
 int32_t getHX711(void){
-	uint32_t data = 0;
-	uint32_t startTime = HAL_GetTick();
-	while(HAL_GPIO_ReadPin(DT_PORT, DT_PIN) == GPIO_PIN_SET)
-	{
-		if(HAL_GetTick() - startTime > 200)
-		{
-			return 0;
-		}
-	}
-	for(int8_t len = 0; len < 24; len++)
-	{
-		HAL_GPIO_WritePin(SCK_PORT, SCK_PIN, GPIO_PIN_SET);
-		microDelay(1);
-		data = data << 1;
-		HAL_GPIO_WritePin(SCK_PORT, SCK_PIN, GPIO_PIN_RESET);
-		microDelay(1);
-		if(HAL_GPIO_ReadPin(DT_PORT, DT_PIN) == GPIO_PIN_SET)
-		{
-			data++;
-		}
-	}
-	data = data ^ 0x800000;
-	HAL_GPIO_WritePin(SCK_PORT, SCK_PIN, GPIO_PIN_SET);
-	microDelay(1);
-	HAL_GPIO_WritePin(SCK_PORT, SCK_PIN, GPIO_PIN_RESET);
-	microDelay(1);
-	return data;
+    uint32_t data = 0;
+    uint32_t startTime = HAL_GetTick();
+    // wait for DT low
+    while(HAL_GPIO_ReadPin(DT_PORT, DT_PIN) == GPIO_PIN_SET)
+    {
+        if(HAL_GetTick() - startTime > 200) return 0; // timeout
+    }
+    for(int8_t i = 0; i < 24; i++)
+    {
+        HAL_GPIO_WritePin(SCK_PORT, SCK_PIN, GPIO_PIN_SET);
+        microDelay(1);
+        data = (data << 1) | (HAL_GPIO_ReadPin(DT_PORT, DT_PIN) == GPIO_PIN_SET ? 1 : 0);
+        HAL_GPIO_WritePin(SCK_PORT, SCK_PIN, GPIO_PIN_RESET);
+        microDelay(1);
+    }
+
+    // sign-extend 24-bit two's complement to 32-bit signed
+    if (data & 0x800000) {
+        data |= 0xFF000000; // set upper bits to 1
+    }
+
+    // pulse once for gain (you already do one pulse in original code; ensure controller expects this)
+    HAL_GPIO_WritePin(SCK_PORT, SCK_PIN, GPIO_PIN_SET);
+    microDelay(1);
+    HAL_GPIO_WritePin(SCK_PORT, SCK_PIN, GPIO_PIN_RESET);
+    microDelay(1);
+
+    return (int32_t)data;
+};
+
+int32_t getAverageRaw(uint8_t samples){
+    int64_t total = 0;
+    for(uint8_t i=0; i<samples; i++){
+        int32_t r = getHX711();
+        total += r;
+    }
+    return (int32_t)(total / samples);
+};
+
+
+void calibrate_with_known_weight(int32_t knownWeight_mg)
+{
+    // measure tare
+    I2C_LCD_SetCursor(MyI2C_LCD,0,1);
+    I2C_LCD_WriteString(MyI2C_LCD,"Remove load...");
+    HAL_Delay(1000);
+    tare = getAverageRaw(10);
+    // show tare
+    I2C_LCD_SetCursor(MyI2C_LCD,0,1);
+    I2C_LCD_WriteString(MyI2C_LCD,"Tare done       ");
+    HAL_Delay(500);
+
+    // prompt to place known weight
+    I2C_LCD_SetCursor(MyI2C_LCD,0,1);
+    I2C_LCD_WriteString(MyI2C_LCD,"Place known wt ");
+    HAL_Delay(3000); // give user time to put weight
+
+    int32_t raw_known = getAverageRaw(10);
+    int32_t diff = raw_known - tare;
+    if (diff <= 0) diff = 1; // avoid div-by-zero or negative
+
+    // compute counts-per-mg scaled by FP
+    knownHX711 = (int32_t)(( (int64_t)diff * FP ) / (int64_t)knownWeight_mg);
+
+    // display computed value for debugging
+    I2C_LCD_SetCursor(MyI2C_LCD,0,1);
+    I2C_LCD_WriteString(MyI2C_LCD,"Cal done        ");
+    HAL_Delay(500);
 };
 
 int32_t weigh()
 {
-	int64_t total = 0;
-	int32_t samples = 10;
-	int32_t miligram;
-	for(uint16_t i = 0; i<samples; i++)
-	{
-		total += getHX711();
-	}
-	total = (int64_t)(total / samples);
-	miligram = (int32_t)(total - tare)*knownOriginal;
-	miligram = miligram / knownHX711;
-	return miligram;
-
+    int32_t raw = getAverageRaw(10);
+    int32_t diff = raw - tare;
+    // compute weight_mg = (diff * FP) / knownHX711
+    int32_t weight_mg = (int32_t)(( (int64_t)diff * FP ) / (int64_t)knownHX711);
+    return weight_mg;
 };
-
 
 
 /* USER CODE END 4 */

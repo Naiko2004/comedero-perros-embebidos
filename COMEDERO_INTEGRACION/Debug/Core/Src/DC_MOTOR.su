@@ -1,6 +1,9 @@
-../Core/Src/DC_MOTOR.c:17:6:DC_MOTOR_Init	192	static
-../Core/Src/DC_MOTOR.c:100:6:DC_MOTOR_Start	16	static
-../Core/Src/DC_MOTOR.c:133:6:DC_MOTOR_Set_Speed	16	static
-../Core/Src/DC_MOTOR.c:154:6:DC_MOTOR_Set_Dir	16	static
-../Core/Src/DC_MOTOR.c:169:6:DC_MOTOR_Stop	16	static
-../Core/Src/DC_MOTOR.c:194:10:DC_MOTOR_Get_MaxFreq	24	static
+../Core/Src/DC_MOTOR.c:21:17:DC_MOTOR_GetTimerClockHz	24	static
+../Core/Src/DC_MOTOR.c:42:6:DC_MOTOR_Init	376	static
+../Core/Src/DC_MOTOR.c:177:6:DC_MOTOR_Start	16	static
+../Core/Src/DC_MOTOR.c:210:6:DC_MOTOR_Set_Speed	16	static
+../Core/Src/DC_MOTOR.c:231:6:DC_MOTOR_Set_Dir	16	static
+../Core/Src/DC_MOTOR.c:246:6:DC_MOTOR_Stop	16	static
+../Core/Src/DC_MOTOR.c:271:10:DC_MOTOR_Get_MaxFreq	24	static
+../Core/Src/DC_MOTOR.c:283:6:DC_MOTOR_Acelerar	16	static
+../Core/Src/DC_MOTOR.c:313:6:DC_MOTOR_Frenar	16	static

@@ -249,9 +249,8 @@ void I2C_LCD_WriteInt32(uint8_t I2C_LCD_InstanceIndex, int32_t Number){
 };
 
 void I2C_LCD_WriteTime(uint8_t I2C_LCD_InstanceIndex, RTC_TimeTypeDef TimeToDisplay){
-	  I2C_LCD_Clear(I2C_LCD_InstanceIndex);
-	  I2C_LCD_SetCursor(I2C_LCD_InstanceIndex, 0, 0);
-	  I2C_LCD_WriteString(I2C_LCD_InstanceIndex, "Hora actual: ");
+	  I2C_LCD_SetCursor(I2C_LCD_InstanceIndex, 0, 1);
+	  I2C_LCD_WriteString(I2C_LCD_InstanceIndex, "        ");
 	  I2C_LCD_SetCursor(I2C_LCD_InstanceIndex, 0, 1);
 	  I2C_LCD_WriteInt32(I2C_LCD_InstanceIndex, (int32_t)TimeToDisplay.Hours);
 	  I2C_LCD_WriteChar(I2C_LCD_InstanceIndex, ':');
@@ -259,3 +258,4 @@ void I2C_LCD_WriteTime(uint8_t I2C_LCD_InstanceIndex, RTC_TimeTypeDef TimeToDisp
 	  I2C_LCD_WriteChar(I2C_LCD_InstanceIndex, ':');
 	  I2C_LCD_WriteInt32(I2C_LCD_InstanceIndex, (int32_t)TimeToDisplay.Seconds);
 };
+

@@ -1,18 +1,7 @@
-13:39:35 **** Incremental Build of configuration Debug for project COMEDERO_RTC_FEE ****
+21:16:39 **** Incremental Build of configuration Debug for project COMEDERO_RTC_FEE ****
 make -j1 all 
-arm-none-eabi-gcc "../Core/Src/I2C_LCD.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/I2C_LCD.d" -MT"Core/Src/I2C_LCD.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/I2C_LCD.o"
-../Core/Src/I2C_LCD.c: In function 'I2C_LCD_WriteInt32':
-../Core/Src/I2C_LCD.c:247:9: warning: implicit declaration of function 'sprintf' [-Wimplicit-function-declaration]
-  247 |         sprintf(buffer, "%ld", (long)Number);
-      |         ^~~~~~~
-../Core/Src/I2C_LCD.c:16:1: note: include '<stdio.h>' or provide a declaration of 'sprintf'
-   15 | #include "Util.h"
-  +++ |+#include <stdio.h>
-   16 | 
-../Core/Src/I2C_LCD.c:247:9: warning: incompatible implicit declaration of built-in function 'sprintf' [-Wbuiltin-declaration-mismatch]
-  247 |         sprintf(buffer, "%ld", (long)Number);
-      |         ^~~~~~~
-../Core/Src/I2C_LCD.c:247:9: note: include '<stdio.h>' or provide a declaration of 'sprintf'
+arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
+arm-none-eabi-gcc "../Core/Src/stm32f1xx_hal_msp.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/stm32f1xx_hal_msp.d" -MT"Core/Src/stm32f1xx_hal_msp.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/stm32f1xx_hal_msp.o"
 arm-none-eabi-gcc -o "COMEDERO_RTC_FEE.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\COMEDERO_RTC\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="COMEDERO_RTC_FEE.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: COMEDERO_RTC_FEE.elf
  
@@ -21,9 +10,6 @@ arm-none-eabi-size  COMEDERO_RTC_FEE.elf
   18216	     92	   2120	  20428	   4fcc	COMEDERO_RTC_FEE.elf
 Finished building: default.size.stdout
  
-arm-none-eabi-objdump -h -S COMEDERO_RTC_FEE.elf  > "COMEDERO_RTC_FEE.list"
-Finished building: COMEDERO_RTC_FEE.list
- 
 
-13:39:36 Build Finished. 0 errors, 2 warnings. (took 1s.469ms)
+21:16:40 Build Finished. 0 errors, 0 warnings. (took 1s.345ms)
 

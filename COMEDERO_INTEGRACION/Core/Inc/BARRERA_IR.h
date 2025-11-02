@@ -1,0 +1,20 @@
+/*
+ * BARRERA_IR.h
+ *
+ *  Created on: Oct 27, 2025
+ *      Author: nico2
+ */
+
+#ifndef INC_BARRERA_IR_H_
+#define INC_BARRERA_IR_H_
+
+#include "stdint.h"
+#include "stm32f1xx_hal.h"
+
+extern TIM_HandleTypeDef htim2;
+
+void delay_us(uint32_t us);
+int readBarrier(unsigned int len);
+void IR_Barrier_init();
+
+#endif /* INC_BARRERA_IR_H_ */

@@ -18,7 +18,6 @@
 
 #define I2C_LCD_MAX	1	// Maximum Number of I2C_LCD Modules in Your Project
 #define I2C_LCD_1	0	// I2C_LCD Instance Number 1 (Add more if you need)
-#define DISPLAY_LCD I2C_LCD_1
 
 //-----[ Prototypes For All User External Functions ]-----
 

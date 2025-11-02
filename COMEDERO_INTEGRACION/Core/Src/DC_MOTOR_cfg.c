@@ -18,8 +18,8 @@ const DC_MOTOR_CfgType DC_MOTOR_CfgParam[DC_MOTOR_UNITS] =
     {
 	    GPIOB,
 		GPIOB,
-		GPIO_PIN_7,
-		GPIO_PIN_6,
+		GPIO_PIN_15,
+		GPIO_PIN_14,
 		TIM2,
 		TIM_CHANNEL_1,
 		1,
