@@ -589,7 +589,7 @@ int main(void)
 
 	  		  break;
 	  	  case ESTADO_REVISAR_ALIMENTO:
-	  		  HAL_Delay(5);
+	  		  HAL_Delay(1);
 	  		  if(HX711_WeighBlocking(&scale) < dosis_objetivo - 2000)
 	  		  {
 	  			  contador_revisar_peso++;
@@ -604,7 +604,7 @@ int main(void)
 	  		  }
 
 	  		  contador++;
-	  		  if(contador > 10)
+	  		  if(contador >= 6)
 	  		  {
 	  			  contador = 0;
 	  			  contador_revisar_peso = 0;

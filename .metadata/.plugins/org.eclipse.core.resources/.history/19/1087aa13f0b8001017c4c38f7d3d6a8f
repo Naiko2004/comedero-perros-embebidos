@@ -589,7 +589,7 @@ int main(void)
 
 	  		  break;
 	  	  case ESTADO_REVISAR_ALIMENTO:
-	  		  HAL_Delay(5);
+	  		  HAL_Delay(1);
 	  		  if(HX711_WeighBlocking(&scale) < dosis_objetivo - 2000)
 	  		  {
 	  			  contador_revisar_peso++;
@@ -601,22 +601,6 @@ int main(void)
 	  			  contador = 0;
 	  			  flag_iniciar_motor = FLAG_ACTIVA;
 	  			  estados = ESTADO_IDLE;
-	  		  }
-
-	  		  contador++;
-	  		  if(contador > 10)
-	  		  {
-	  			  contador = 0;
-	  			  contador_revisar_peso = 0;
-	  			  estados = ESTADO_ALIMENTO_SERVIDO;
-	  			  displayTime.Hours = 0;
-	  			  displayTime.Minutes = 0;
-	  			  displayTime.Seconds = 0;
-	  			  I2C_LCD_Clear(I2C_LCD_1);
-	  			  I2C_LCD_SetCursor(I2C_LCD_1, 0, 0);
-	  			  I2C_LCD_WriteString(I2C_LCD_1, "Alimento servido!");
-	  			  I2C_LCD_WriteTime(I2C_LCD_1, displayTime);
-	  			  SERVO_MoveTo(SERVO_PUERTA, SERVO_ABIERTO);
 	  		  }
 	  		  break;
 	  	  case ESTADO_ALIMENTO_SERVIDO:

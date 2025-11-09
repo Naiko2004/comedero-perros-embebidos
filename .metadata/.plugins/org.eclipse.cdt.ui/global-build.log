@@ -1,141 +1,78 @@
-12:38:23 **** Incremental Build of configuration Debug for project COMEDERO_INTEGRACION ****
+12:10:16 **** Incremental Build of configuration Debug for project COMEDERO_INTEGRACION ****
 make -j1 all 
-arm-none-eabi-gcc "../Core/Src/HX711.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/HX711.d" -MT"Core/Src/HX711.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/HX711.o"
 arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
 ../Core/Src/main.c: In function 'main':
-../Core/Src/main.c:331:27: warning: enumeration value 'CONFIGURACION_CAMBIAR_HORA' not handled in switch [-Wswitch]
-  331 |                           switch(estado_menu)
+../Core/Src/main.c:332:27: warning: enumeration value 'CONFIGURACION_CAMBIAR_HORA' not handled in switch [-Wswitch]
+  332 |                           switch(estado_menu)
       |                           ^~~~~~
-../Core/Src/main.c:331:27: warning: enumeration value 'CONFIGURACION_PROBAR_MOTOR' not handled in switch [-Wswitch]
-../Core/Src/main.c:331:27: warning: enumeration value 'CONFIGURACION_IDLE' not handled in switch [-Wswitch]
-../Core/Src/main.c:331:27: warning: enumeration value 'CONFIGURACION_BALANZA' not handled in switch [-Wswitch]
-../Core/Src/main.c:331:27: warning: enumeration value 'CONFIGURACION_SERVO' not handled in switch [-Wswitch]
-../Core/Src/main.c:331:27: warning: enumeration value 'CONFIGURACION_BARRERA_IR' not handled in switch [-Wswitch]
-../Core/Src/main.c:331:27: warning: enumeration value 'CONFIGURACION_IDLE2' not handled in switch [-Wswitch]
-../Core/Src/main.c:804:43: warning: case value '0' not in enumerated type 'Motor_speeds' {aka 'enum DC_MOTOR_SPEEDS'} [-Wswitch]
-  804 |                                           case 0:
+../Core/Src/main.c:332:27: warning: enumeration value 'CONFIGURACION_PROBAR_MOTOR' not handled in switch [-Wswitch]
+../Core/Src/main.c:332:27: warning: enumeration value 'CONFIGURACION_IDLE' not handled in switch [-Wswitch]
+../Core/Src/main.c:332:27: warning: enumeration value 'CONFIGURACION_BALANZA' not handled in switch [-Wswitch]
+../Core/Src/main.c:332:27: warning: enumeration value 'CONFIGURACION_SERVO' not handled in switch [-Wswitch]
+../Core/Src/main.c:332:27: warning: enumeration value 'CONFIGURACION_BARRERA_IR' not handled in switch [-Wswitch]
+../Core/Src/main.c:332:27: warning: enumeration value 'CONFIGURACION_IDLE2' not handled in switch [-Wswitch]
+../Core/Src/main.c:838:43: warning: case value '0' not in enumerated type 'Motor_speeds' {aka 'enum DC_MOTOR_SPEEDS'} [-Wswitch]
+  838 |                                           case 0:
       |                                           ^~~~
-../Core/Src/main.c:840:43: warning: case value '0' not in enumerated type 'Motor_speeds' {aka 'enum DC_MOTOR_SPEEDS'} [-Wswitch]
-  840 |                                           case 0:
+../Core/Src/main.c:874:43: warning: case value '0' not in enumerated type 'Motor_speeds' {aka 'enum DC_MOTOR_SPEEDS'} [-Wswitch]
+  874 |                                           case 0:
       |                                           ^~~~
-../Core/Src/main.c:629:27: warning: enumeration value 'AGREGAR_IDLE' not handled in switch [-Wswitch]
-  629 |                           switch(estado_menu)
+../Core/Src/main.c:663:27: warning: enumeration value 'AGREGAR_IDLE' not handled in switch [-Wswitch]
+  663 |                           switch(estado_menu)
       |                           ^~~~~~
-../Core/Src/main.c:629:27: warning: enumeration value 'AGREGAR_TIEMPO' not handled in switch [-Wswitch]
-../Core/Src/main.c:629:27: warning: enumeration value 'AGREGAR_TIEMPO_HORAS' not handled in switch [-Wswitch]
-../Core/Src/main.c:629:27: warning: enumeration value 'AGREGAR_DOSIS' not handled in switch [-Wswitch]
-../Core/Src/main.c:629:27: warning: enumeration value 'AGREGAR_CONFIRMACION' not handled in switch [-Wswitch]
-../Core/Src/main.c:264:11: warning: enumeration value 'ESTADO_INICIANDO' not handled in switch [-Wswitch]
-  264 |           switch(estados)
+../Core/Src/main.c:663:27: warning: enumeration value 'AGREGAR_TIEMPO' not handled in switch [-Wswitch]
+../Core/Src/main.c:663:27: warning: enumeration value 'AGREGAR_TIEMPO_HORAS' not handled in switch [-Wswitch]
+../Core/Src/main.c:663:27: warning: enumeration value 'AGREGAR_DOSIS' not handled in switch [-Wswitch]
+../Core/Src/main.c:663:27: warning: enumeration value 'AGREGAR_CONFIRMACION' not handled in switch [-Wswitch]
+../Core/Src/main.c:265:11: warning: enumeration value 'ESTADO_INICIANDO' not handled in switch [-Wswitch]
+  265 |           switch(estados)
       |           ^~~~~~
 arm-none-eabi-gcc -o "COMEDERO_INTEGRACION.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\COMEDERO_INTEGRACION\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="COMEDERO_INTEGRACION.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: COMEDERO_INTEGRACION.elf
  
 arm-none-eabi-size  COMEDERO_INTEGRACION.elf 
    text	   data	    bss	    dec	    hex	filename
-  35740	     96	   2456	  38292	   9594	COMEDERO_INTEGRACION.elf
+  35796	     96	   2456	  38348	   95cc	COMEDERO_INTEGRACION.elf
 Finished building: default.size.stdout
  
 arm-none-eabi-objdump -h -S COMEDERO_INTEGRACION.elf  > "COMEDERO_INTEGRACION.list"
 Finished building: COMEDERO_INTEGRACION.list
  
-12:38:30 **** Incremental Build of configuration Debug for project COMEDERO_INTEGRACION ****
+12:10:57 **** Incremental Build of configuration Debug for project COMEDERO_INTEGRACION ****
 make -j1 all 
-arm-none-eabi-gcc "../Core/Src/HX711.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/HX711.d" -MT"Core/Src/HX711.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/HX711.o"
 arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
 ../Core/Src/main.c: In function 'main':
-../Core/Src/main.c:331:27: warning: enumeration value 'CONFIGURACION_CAMBIAR_HORA' not handled in switch [-Wswitch]
-  331 |                           switch(estado_menu)
+../Core/Src/main.c:332:27: warning: enumeration value 'CONFIGURACION_CAMBIAR_HORA' not handled in switch [-Wswitch]
+  332 |                           switch(estado_menu)
       |                           ^~~~~~
-../Core/Src/main.c:331:27: warning: enumeration value 'CONFIGURACION_PROBAR_MOTOR' not handled in switch [-Wswitch]
-../Core/Src/main.c:331:27: warning: enumeration value 'CONFIGURACION_IDLE' not handled in switch [-Wswitch]
-../Core/Src/main.c:331:27: warning: enumeration value 'CONFIGURACION_BALANZA' not handled in switch [-Wswitch]
-../Core/Src/main.c:331:27: warning: enumeration value 'CONFIGURACION_SERVO' not handled in switch [-Wswitch]
-../Core/Src/main.c:331:27: warning: enumeration value 'CONFIGURACION_BARRERA_IR' not handled in switch [-Wswitch]
-../Core/Src/main.c:331:27: warning: enumeration value 'CONFIGURACION_IDLE2' not handled in switch [-Wswitch]
-../Core/Src/main.c:804:43: warning: case value '0' not in enumerated type 'Motor_speeds' {aka 'enum DC_MOTOR_SPEEDS'} [-Wswitch]
-  804 |                                           case 0:
+../Core/Src/main.c:332:27: warning: enumeration value 'CONFIGURACION_PROBAR_MOTOR' not handled in switch [-Wswitch]
+../Core/Src/main.c:332:27: warning: enumeration value 'CONFIGURACION_IDLE' not handled in switch [-Wswitch]
+../Core/Src/main.c:332:27: warning: enumeration value 'CONFIGURACION_BALANZA' not handled in switch [-Wswitch]
+../Core/Src/main.c:332:27: warning: enumeration value 'CONFIGURACION_SERVO' not handled in switch [-Wswitch]
+../Core/Src/main.c:332:27: warning: enumeration value 'CONFIGURACION_BARRERA_IR' not handled in switch [-Wswitch]
+../Core/Src/main.c:332:27: warning: enumeration value 'CONFIGURACION_IDLE2' not handled in switch [-Wswitch]
+../Core/Src/main.c:838:43: warning: case value '0' not in enumerated type 'Motor_speeds' {aka 'enum DC_MOTOR_SPEEDS'} [-Wswitch]
+  838 |                                           case 0:
       |                                           ^~~~
-../Core/Src/main.c:840:43: warning: case value '0' not in enumerated type 'Motor_speeds' {aka 'enum DC_MOTOR_SPEEDS'} [-Wswitch]
-  840 |                                           case 0:
+../Core/Src/main.c:874:43: warning: case value '0' not in enumerated type 'Motor_speeds' {aka 'enum DC_MOTOR_SPEEDS'} [-Wswitch]
+  874 |                                           case 0:
       |                                           ^~~~
-../Core/Src/main.c:629:27: warning: enumeration value 'AGREGAR_IDLE' not handled in switch [-Wswitch]
-  629 |                           switch(estado_menu)
+../Core/Src/main.c:663:27: warning: enumeration value 'AGREGAR_IDLE' not handled in switch [-Wswitch]
+  663 |                           switch(estado_menu)
       |                           ^~~~~~
-../Core/Src/main.c:629:27: warning: enumeration value 'AGREGAR_TIEMPO' not handled in switch [-Wswitch]
-../Core/Src/main.c:629:27: warning: enumeration value 'AGREGAR_TIEMPO_HORAS' not handled in switch [-Wswitch]
-../Core/Src/main.c:629:27: warning: enumeration value 'AGREGAR_DOSIS' not handled in switch [-Wswitch]
-../Core/Src/main.c:629:27: warning: enumeration value 'AGREGAR_CONFIRMACION' not handled in switch [-Wswitch]
-../Core/Src/main.c:264:11: warning: enumeration value 'ESTADO_INICIANDO' not handled in switch [-Wswitch]
-  264 |           switch(estados)
+../Core/Src/main.c:663:27: warning: enumeration value 'AGREGAR_TIEMPO' not handled in switch [-Wswitch]
+../Core/Src/main.c:663:27: warning: enumeration value 'AGREGAR_TIEMPO_HORAS' not handled in switch [-Wswitch]
+../Core/Src/main.c:663:27: warning: enumeration value 'AGREGAR_DOSIS' not handled in switch [-Wswitch]
+../Core/Src/main.c:663:27: warning: enumeration value 'AGREGAR_CONFIRMACION' not handled in switch [-Wswitch]
+../Core/Src/main.c:265:11: warning: enumeration value 'ESTADO_INICIANDO' not handled in switch [-Wswitch]
+  265 |           switch(estados)
       |           ^~~~~~
 arm-none-eabi-gcc -o "COMEDERO_INTEGRACION.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\COMEDERO_INTEGRACION\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="COMEDERO_INTEGRACION.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: COMEDERO_INTEGRACION.elf
  
 arm-none-eabi-size  COMEDERO_INTEGRACION.elf 
    text	   data	    bss	    dec	    hex	filename
-  35740	     96	   2456	  38292	   9594	COMEDERO_INTEGRACION.elf
-Finished building: default.size.stdout
- 
-arm-none-eabi-objdump -h -S COMEDERO_INTEGRACION.elf  > "COMEDERO_INTEGRACION.list"
-Finished building: COMEDERO_INTEGRACION.list
- 
-13:24:54 **** Incremental Build of configuration Debug for project COMEDERO_INTEGRACION ****
-make -j1 all 
-arm-none-eabi-gcc "../Core/Src/DC_MOTOR.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/DC_MOTOR.d" -MT"Core/Src/DC_MOTOR.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/DC_MOTOR.o"
-../Core/Src/DC_MOTOR.c: In function 'DC_MOTOR_Init':
-../Core/Src/DC_MOTOR.c:52:14: warning: variable 'req_res_bits' set but not used [-Wunused-but-set-variable]
-   52 |     uint8_t  req_res_bits;
-      |              ^~~~~~~~~~~~
-../Core/Src/DC_MOTOR.c: In function 'DC_MOTOR_Acelerar':
-../Core/Src/DC_MOTOR.c:289:52: error: 'DIR_CCWCW' undeclared (first use in this function); did you mean 'DIR_CCW'?
-  289 |                 DC_MOTOR_Start(au8_MOTOR_Instance, DIR_CCWCW, *au16_SPEED);
-      |                                                    ^~~~~~~~~
-      |                                                    DIR_CCW
-../Core/Src/DC_MOTOR.c:289:52: note: each undeclared identifier is reported only once for each function it appears in
-make: *** [Core/Src/subdir.mk:64: Core/Src/DC_MOTOR.o] Error 1
-"make -j1 all" terminated with exit code 2. Build might be incomplete.
-13:25:05 **** Incremental Build of configuration Debug for project COMEDERO_INTEGRACION ****
-make -j1 all 
-arm-none-eabi-gcc "../Core/Src/DC_MOTOR.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/DC_MOTOR.d" -MT"Core/Src/DC_MOTOR.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/DC_MOTOR.o"
-../Core/Src/DC_MOTOR.c: In function 'DC_MOTOR_Init':
-../Core/Src/DC_MOTOR.c:52:14: warning: variable 'req_res_bits' set but not used [-Wunused-but-set-variable]
-   52 |     uint8_t  req_res_bits;
-      |              ^~~~~~~~~~~~
-arm-none-eabi-gcc "../Core/Src/HX711.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/HX711.d" -MT"Core/Src/HX711.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/HX711.o"
-arm-none-eabi-gcc "../Core/Src/main.c" -mcpu=cortex-m3 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F103xB -c -I../Core/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc -I../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F1xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/main.d" -MT"Core/Src/main.o" --specs=nano.specs -mfloat-abi=soft -mthumb -o "Core/Src/main.o"
-../Core/Src/main.c: In function 'main':
-../Core/Src/main.c:331:27: warning: enumeration value 'CONFIGURACION_CAMBIAR_HORA' not handled in switch [-Wswitch]
-  331 |                           switch(estado_menu)
-      |                           ^~~~~~
-../Core/Src/main.c:331:27: warning: enumeration value 'CONFIGURACION_PROBAR_MOTOR' not handled in switch [-Wswitch]
-../Core/Src/main.c:331:27: warning: enumeration value 'CONFIGURACION_IDLE' not handled in switch [-Wswitch]
-../Core/Src/main.c:331:27: warning: enumeration value 'CONFIGURACION_BALANZA' not handled in switch [-Wswitch]
-../Core/Src/main.c:331:27: warning: enumeration value 'CONFIGURACION_SERVO' not handled in switch [-Wswitch]
-../Core/Src/main.c:331:27: warning: enumeration value 'CONFIGURACION_BARRERA_IR' not handled in switch [-Wswitch]
-../Core/Src/main.c:331:27: warning: enumeration value 'CONFIGURACION_IDLE2' not handled in switch [-Wswitch]
-../Core/Src/main.c:804:43: warning: case value '0' not in enumerated type 'Motor_speeds' {aka 'enum DC_MOTOR_SPEEDS'} [-Wswitch]
-  804 |                                           case 0:
-      |                                           ^~~~
-../Core/Src/main.c:840:43: warning: case value '0' not in enumerated type 'Motor_speeds' {aka 'enum DC_MOTOR_SPEEDS'} [-Wswitch]
-  840 |                                           case 0:
-      |                                           ^~~~
-../Core/Src/main.c:629:27: warning: enumeration value 'AGREGAR_IDLE' not handled in switch [-Wswitch]
-  629 |                           switch(estado_menu)
-      |                           ^~~~~~
-../Core/Src/main.c:629:27: warning: enumeration value 'AGREGAR_TIEMPO' not handled in switch [-Wswitch]
-../Core/Src/main.c:629:27: warning: enumeration value 'AGREGAR_TIEMPO_HORAS' not handled in switch [-Wswitch]
-../Core/Src/main.c:629:27: warning: enumeration value 'AGREGAR_DOSIS' not handled in switch [-Wswitch]
-../Core/Src/main.c:629:27: warning: enumeration value 'AGREGAR_CONFIRMACION' not handled in switch [-Wswitch]
-../Core/Src/main.c:264:11: warning: enumeration value 'ESTADO_INICIANDO' not handled in switch [-Wswitch]
-  264 |           switch(estados)
-      |           ^~~~~~
-arm-none-eabi-gcc -o "COMEDERO_INTEGRACION.elf" @"objects.list"   -mcpu=cortex-m3 -T"C:\Users\nico2\OneDrive\Desktop\EMBEBIDOS\COMEDERO_INTEGRACION\STM32F103C8TX_FLASH.ld" --specs=nosys.specs -Wl,-Map="COMEDERO_INTEGRACION.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
-Finished building target: COMEDERO_INTEGRACION.elf
- 
-arm-none-eabi-size  COMEDERO_INTEGRACION.elf 
-   text	   data	    bss	    dec	    hex	filename
-  35740	     96	   2456	  38292	   9594	COMEDERO_INTEGRACION.elf
+  35796	     96	   2456	  38348	   95cc	COMEDERO_INTEGRACION.elf
 Finished building: default.size.stdout
  
 arm-none-eabi-objdump -h -S COMEDERO_INTEGRACION.elf  > "COMEDERO_INTEGRACION.list"

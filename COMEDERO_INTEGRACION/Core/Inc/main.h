@@ -46,6 +46,7 @@ typedef enum {
 	ESTADO_ALIMENTO_SERVIDO = 4,
 	ESTADO_DEBUG = 5,
 	ESTADO_AGREGAR_ALIMENTO = 6,
+	ESTADO_REVISAR_ALIMENTO = 7,
 } estado;
 
 typedef enum{
